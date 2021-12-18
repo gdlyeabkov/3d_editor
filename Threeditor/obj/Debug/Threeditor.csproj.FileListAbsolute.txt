@@ -1,0 +1,16 @@
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Threeditor.exe.config
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Threeditor.exe
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Threeditor.pdb
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.csproj.AssemblyReference.cache
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.csproj.SuggestedBindingRedirects.cache
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\MainWindow.g.cs
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\App.g.cs
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor_MarkupCompile.cache
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor_MarkupCompile.lref
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\MainWindow.baml
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.g.resources
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.Properties.Resources.resources
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.csproj.GenerateResource.cache
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.csproj.CoreCompileInputs.cache
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.exe
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.pdb

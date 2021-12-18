@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Threeditor", "Threeditor\Threeditor.csproj", "{A971EE23-0679-48C8-96AD-A2E0F82399ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A971EE23-0679-48C8-96AD-A2E0F82399ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A971EE23-0679-48C8-96AD-A2E0F82399ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A971EE23-0679-48C8-96AD-A2E0F82399ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A971EE23-0679-48C8-96AD-A2E0F82399ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A803AB41-0098-4899-A740-BD63B2EE2304}
+	EndGlobalSection
+EndGlobal
