@@ -5,141 +5,268 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Threeditor"
         mc:Ignorable="d"
-        WindowState="Maximized" Title="3D редактор" Height="450" Width="800">
+        WindowState="Maximized" Title="3D редактор" Height="450" Width="800" KeyUp="GlobalHotKeysHandler">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                
+                <MenuItem Header="Рендер" Click="RenderHandler" />
             </MenuItem>
         </Menu>
         <StackPanel DockPanel.Dock="Left" Visibility="Collapsed" Width="250" Background="LightGray">
             
         </StackPanel>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Width="250" Background="LightGray">
-            <StackPanel Width="50">
-                <TextBlock Text="⛶" Margin="5" />
-                <TextBlock Text="⛶" Margin="5" />
-                <TextBlock Text="⛶" Margin="5" />
-                <TextBlock Text="⛶" Margin="5" />
-                <TextBlock Text="⛶" Margin="5" />
-                <TextBlock Text="⛶" Margin="5" />
+        <StackPanel DockPanel.Dock="Left" Visibility="Visible" Width="75" Background="LightGray">
+            <StackPanel Background="Gray" Margin="20">
+                <TextBlock Text="📦" HorizontalAlignment="Center" Margin="0, 5" FontSize="16" />
             </StackPanel>
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="⮟" />
-                    <TextBlock Margin="5" Text="Трансформация" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="Положение" />
-                    <TextBlock Margin="5" Text="X" />
-                    <TextBox Margin="5" Width="50" Text="0m" KeyUp="SetXLocationHandler" />
-                    <TextBlock Margin="5" Text="🔒" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="" Width="65" />
-                    <TextBlock Margin="5" Text="Y" />
-                    <TextBox Margin="5" Width="50" Text="0m" KeyUp="SetYLocationHandler" />
-                    <TextBlock Margin="5" Text="🔒" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="" Width="65" />
-                    <TextBlock Margin="5" Text="Z" />
-                    <TextBox Margin="5" Width="50" Text="0m" KeyUp="SetZLocationHandler" />
-                    <TextBlock Margin="5" Text="🔒" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="Поворот" />
-                    <TextBlock Margin="5" Text="X" />
-                    <TextBox Margin="5" Width="50" Text="0m" KeyUp="SetXRotationHandler" />
-                    <TextBlock Margin="5" Text="🔒" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="" Width="50" />
-                    <TextBlock Margin="5" Text="Y" />
-                    <TextBox Margin="5" Width="50" Text="0m" KeyUp="SetYRotationHandler" />
-                    <TextBlock Margin="5" Text="🔒" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="" Width="50" />
-                    <TextBlock Margin="5" Text="Z" />
-                    <TextBox Margin="5" Width="50" Text="0m" KeyUp="SetZRotationHandler" />
-                    <TextBlock Margin="5" Text="🔒" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="Масштаб" />
-                    <TextBlock Margin="5" Text="X" />
-                    <TextBox Margin="5" Width="50" Text="0m" KeyUp="SetXScaleHandler" />
-                    <TextBlock Margin="5" Text="🔒" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="" Width="50" />
-                    <TextBlock Margin="5" Text="Y" />
-                    <TextBox Margin="5" Width="50" Text="0m" KeyUp="SetYScaleHandler" />
-                    <TextBlock Margin="5" Text="🔒" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="" Width="50" />
-                    <TextBlock Margin="5" Text="Z" />
-                    <TextBox Margin="5" Width="50" Text="0m" KeyUp="SetZScaleHandler" />
-                    <TextBlock Margin="5" Text="🔒" />
-                </StackPanel>
+            <StackPanel Background="Gray" Margin="20">
+                <TextBlock Text="📦" HorizontalAlignment="Center" Margin="0, 5" FontSize="16" />
+            </StackPanel>
+            <StackPanel Background="Gray" Margin="20">
+                <TextBlock Text="📦" HorizontalAlignment="Center" Margin="0, 5" FontSize="16" />
+            </StackPanel>
+            <StackPanel Background="Gray" Margin="20">
+                <TextBlock Text="🔄" HorizontalAlignment="Center" Margin="0, 5" FontSize="16" />
+            </StackPanel>
+            <StackPanel Background="Gray" Margin="20">
+                <TextBlock Text="📦" HorizontalAlignment="Center" Margin="0, 5" FontSize="16" />
+            </StackPanel>
+            <StackPanel Background="Gray" Margin="20">
+                <TextBlock Text="🖊" HorizontalAlignment="Center" Margin="0, 5" FontSize="16" />
+            </StackPanel>
+            <StackPanel Background="Gray" Margin="20">
+                <TextBlock Text="📐" HorizontalAlignment="Center" Margin="0, 5" FontSize="16" />
+            </StackPanel>
+            <StackPanel Background="Gray" Margin="20" MouseUp="CreateCubeHandler">
+                <TextBlock Text="📦" HorizontalAlignment="Center" Margin="0, 5" FontSize="16" />
             </StackPanel>
         </StackPanel>
+        <ScrollViewer DockPanel.Dock="Right">
+            <StackPanel Width="250" Background="LightGray">
+                <StackPanel x:Name="sceneCollection">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5" Text="⮟" />
+                        <TextBlock Margin="5" Text="Содержимое сцены" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="25, 5, 5, 5" Text="🎥" />
+                        <TextBlock Margin="5" Text="Камера" />
+                    </StackPanel>
+                    <StackPanel Background="SkyBlue" Orientation="Horizontal" MouseUp="SelectMeshHandler">
+                        <TextBlock Margin="25, 5, 5, 5" Text="🛆" />
+                        <TextBlock Margin="5" Text="Куб" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="25, 5, 5, 5" Text="💡" />
+                        <TextBlock Margin="5" Text="Свет" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Background="LightGray">
+                    <StackPanel Width="50">
+                        <TextBlock Text="⛶" Margin="5" />
+                        <TextBlock Text="⛶" Margin="5" />
+                        <TextBlock Text="⛶" Margin="5" />
+                        <TextBlock Text="⛶" Margin="5" />
+                        <TextBlock Text="⛶" Margin="5" />
+                        <TextBlock Text="⛶" Margin="5" />
+                    </StackPanel>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5" Text="⮟" MouseUp="ToggleTransformSettingsHandler" />
+                            <TextBlock Margin="5" Text="Трансформация" />
+                        </StackPanel>
+                        <StackPanel x:Name="transformSettings">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" Width="65" Text="Положение" />
+                                <TextBlock Margin="5" Text="X" />
+                                <TextBox x:Name="transformXLocation" Margin="5" Width="50" Text="0m" KeyUp="SetXLocationHandler" />
+                                <TextBlock Margin="5" Text="🔒" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" Text="" Width="65" />
+                                <TextBlock Margin="5" Text="Y" />
+                                <TextBox x:Name="transformYLocation" Margin="5" Width="50" Text="0m" KeyUp="SetYLocationHandler" />
+                                <TextBlock Margin="5" Text="🔒" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" Text="" Width="65" />
+                                <TextBlock Margin="5" Text="Z" />
+                                <TextBox x:Name="transformZLocation" Margin="5" Width="50" Text="0m" KeyUp="SetZLocationHandler" />
+                                <TextBlock Margin="5" Text="🔒" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" Width="65" Text="Поворот" />
+                                <TextBlock Margin="5" Text="X" />
+                                <TextBox x:Name="transformXRotation" Margin="5" Width="50" Text="0m" KeyUp="SetXRotationHandler" />
+                                <TextBlock Margin="5" Text="🔒" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" Text="" Width="65" />
+                                <TextBlock Margin="5" Text="Y" />
+                                <TextBox x:Name="transformYRotation" Margin="5" Width="50" Text="0m" KeyUp="SetYRotationHandler" />
+                                <TextBlock Margin="5" Text="🔒" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" Text="" Width="65" />
+                                <TextBlock Margin="5" Text="Z" />
+                                <TextBox x:Name="transformZRotation" Margin="5" Width="50" Text="0m" KeyUp="SetZRotationHandler" />
+                                <TextBlock Margin="5" Text="🔒" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" Width="65" Text="Масштаб" />
+                                <TextBlock Margin="5" Text="X" />
+                                <TextBox x:Name="transformXScale" Margin="5" Width="50" Text="0m" KeyUp="SetXScaleHandler" />
+                                <TextBlock Margin="5" Text="🔒" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" Text="" Width="65" />
+                                <TextBlock Margin="5" Text="Y" />
+                                <TextBox x:Name="transformYScale" Margin="5" Width="50" Text="0m" KeyUp="SetYScaleHandler" />
+                                <TextBlock Margin="5" Text="🔒" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" Text="" Width="65" />
+                                <TextBlock Margin="5" Text="Z" />
+                                <TextBox x:Name="transformZScale" Margin="5" Width="50" Text="0m" KeyUp="SetZScaleHandler" />
+                                <TextBlock Margin="5" Text="🔒" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5" Text="⮟" MouseUp="ToggleRelationSettingsHandler" />
+                            <TextBlock Margin="5" Text="Отношения" />
+                        </StackPanel>
+                        <StackPanel x:Name="relationSettings">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" Width="65" Text="Родитель" />
+                                <ComboBox x:Name="relationParent" Margin="5" Width="50" Text="0m" DropDownClosed="SetPossibleParentHandler" DropDownOpened="GetPossibleParentsHandler" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
         <StackPanel Background="LightSlateGray" DockPanel.Dock="Bottom" Height="150">
 
         </StackPanel>
         <StackPanel MouseDown="StartMoveCameraHandler" MouseMove="MoveCameraHandler" MouseUp="StopMoveCameraHandler" DockPanel.Dock="Left" Background="Gray">
-            <Viewport3D x:Name="space" ClipToBounds="True" Width="1000" Height="1000">
-                <Viewport3D.Camera>
-                    <PerspectiveCamera x:Name="mainCamera" Position="0,0,5" LookDirection="0,0,-1" />
-                </Viewport3D.Camera>
-                <Viewport3D.Children>
-                    <ModelVisual3D>
-                        <ModelVisual3D.Content>
-                            <DirectionalLight Color="#FFFFFF" Direction="-0.612372,-0.5,-0.612372" />
-                        </ModelVisual3D.Content>
-                    </ModelVisual3D>
-                    <ModelVisual3D x:Name="startSelectedMesh">
-                        <ModelVisual3D.Content>
-                            <GeometryModel3D>
-                                <GeometryModel3D.Geometry>
-                                    <MeshGeometry3D
+            <StackPanel.ContextMenu>
+                <ContextMenu x:Name="spaceContextMenu">
+                    <MenuItem Header="Контекстное меню объекта" IsEnabled="False" />
+                    <MenuItem Header="Сгладить плавно" />
+                    <MenuItem Header="Сгладить плоско" />
+                    <MenuItem Header="Конвертировать в" />
+                    <MenuItem Header="Задать начало" />
+                    <MenuItem Header="Копировать объекты" />
+                    <MenuItem Header="Вставить объекты" />
+                    <MenuItem Header="Дублировать объекты" />
+                    <MenuItem Header="Дублировать ссылку" />
+                    <MenuItem Header="Переименовать активный объект" />
+                    <MenuItem Header="Зеркало" />
+                    <MenuItem Header="Привязка" />
+                    <MenuItem Header="Родитель" />
+                    <MenuItem Header="Переместить в коллекцию" />
+                    <MenuItem Header="Вставить ключевой кадр" />
+                    <MenuItem Header="Удалить" />
+                </ContextMenu>
+            </StackPanel.ContextMenu>
+            <Canvas x:Name="canvas" Background="Transparent" Canvas.ZIndex="5" Width="1195" Height="635" MouseUp="Set3DCursorLocationHandler">
+                <Viewport3D x:Name="space" ClipToBounds="True" Width="1000" Height="1000">
+
+                    <Viewport3D.Camera>
+                        <PerspectiveCamera x:Name="mainCamera" Position="0,0,5" LookDirection="0,0,-1" />
+                    </Viewport3D.Camera>
+                    <Viewport3D.Children>
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <DirectionalLight Color="#FFFFFF" Direction="-0.612372,-0.5,-0.612372" />
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
+                        <!--
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <GeometryModel3D>
+                                    <GeometryModel3D.Geometry>
+                                        <MeshGeometry3D
+                                            Positions="0,0,0 5,-3,5 0,-3,5" TriangleIndices="0 2 1" />
+                                    </GeometryModel3D.Geometry>
+                                    <GeometryModel3D.Material>
+                                        <MaterialGroup>
+                                            <DiffuseMaterial>
+                                                <DiffuseMaterial.Brush>
+                                                    <SolidColorBrush Color="Green">
+
+                                                    </SolidColorBrush>
+                                                </DiffuseMaterial.Brush>
+                                            </DiffuseMaterial>
+                                        </MaterialGroup>
+                                    </GeometryModel3D.Material>
+                                    <GeometryModel3D.Transform>
+                                        <Transform3DGroup>
+                                            <Transform3DGroup.Children>
+                                                <TranslateTransform3D OffsetX="3" OffsetZ="0" OffsetY="0">
+                                                </TranslateTransform3D>
+                                                <ScaleTransform3D ScaleX="0.1" ScaleY="0.1" ScaleZ="0.1">
+                                                </ScaleTransform3D>
+                                                <RotateTransform3D>
+                                                    <RotateTransform3D.Rotation>
+                                                        <AxisAngleRotation3D Axis="1, 1, 1" Angle="45" />
+                                                    </RotateTransform3D.Rotation>
+                                                </RotateTransform3D>
+                                            </Transform3DGroup.Children>
+                                        </Transform3DGroup>
+                                    </GeometryModel3D.Transform>
+                                </GeometryModel3D>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
+                        -->
+                        <ModelVisual3D x:Name="startSelectedMesh">
+                            <ModelVisual3D.Content>
+                                <GeometryModel3D>
+                                    <GeometryModel3D.Geometry>
+                                        <MeshGeometry3D
                                      TriangleIndices="0 1 3 1 2 3 0 4 3 4 7 3 4 6 7 4 5 6 0 4 1 1 4 5 1 2 6 6 5 1 2 3 7 7 6 2"
                                      Positions="0, 0, 0 1, 0, 0 1, 1, 0 0, 1, 0 0, 0, 1 1, 0, 1 1, 1, 1 0, 1, 1" />
-                                </GeometryModel3D.Geometry>
-                                <GeometryModel3D.Material>
-                                    <MaterialGroup>
-                                        <DiffuseMaterial>
-                                            <DiffuseMaterial.Brush>
-                                                <SolidColorBrush Color="Red">
+                                    </GeometryModel3D.Geometry>
+                                    <GeometryModel3D.Material>
+                                        <MaterialGroup>
+                                            <DiffuseMaterial>
+                                                <DiffuseMaterial.Brush>
+                                                    <SolidColorBrush Color="Red">
 
-                                                </SolidColorBrush>
-                                            </DiffuseMaterial.Brush>
-                                        </DiffuseMaterial>
-                                    </MaterialGroup>
-                                </GeometryModel3D.Material>
-                                <GeometryModel3D.Transform>
-                                    <Transform3DGroup>
-                                        <Transform3DGroup.Children>
-                                            <TranslateTransform3D OffsetX="3" OffsetZ="0" OffsetY="0">
-                                            </TranslateTransform3D>
-                                            <ScaleTransform3D ScaleX="0.1" ScaleY="0.1" ScaleZ="0.1">
-                                            </ScaleTransform3D>
-                                            <RotateTransform3D>
-                                                <RotateTransform3D.Rotation>
-                                                    <AxisAngleRotation3D Axis="1, 1, 1" Angle="45" />
-                                                </RotateTransform3D.Rotation>
-                                            </RotateTransform3D>
-                                        </Transform3DGroup.Children>
-                                    </Transform3DGroup>
-                                </GeometryModel3D.Transform>
-                            </GeometryModel3D>
-                        </ModelVisual3D.Content>
-                    </ModelVisual3D>
+                                                    </SolidColorBrush>
+                                                </DiffuseMaterial.Brush>
+                                            </DiffuseMaterial>
+                                        </MaterialGroup>
+                                    </GeometryModel3D.Material>
+                                    <GeometryModel3D.Transform>
+                                        <Transform3DGroup>
+                                            <Transform3DGroup.Children>
+                                                <TranslateTransform3D OffsetX="3" OffsetZ="0" OffsetY="0">
+                                                </TranslateTransform3D>
+                                                <ScaleTransform3D ScaleX="0.1" ScaleY="0.1" ScaleZ="0.1">
+                                                </ScaleTransform3D>
+                                                <RotateTransform3D>
+                                                    <RotateTransform3D.Rotation>
+                                                        <AxisAngleRotation3D Axis="1, 1, 1" Angle="45" />
+                                                    </RotateTransform3D.Rotation>
+                                                </RotateTransform3D>
+                                            </Transform3DGroup.Children>
+                                        </Transform3DGroup>
+                                    </GeometryModel3D.Transform>
+                                </GeometryModel3D>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
 
-                </Viewport3D.Children>
-
-            </Viewport3D>
+                    </Viewport3D.Children>
+                </Viewport3D>
+                <Rectangle x:Name="meshCursor" Width="35" Height="35">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="https://cdn0.iconfinder.com/data/icons/sports-113/24/sport-aim-goal-target-focus-athletics-bullseye-256.png">
+                        </ImageBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Canvas>
+            
         </StackPanel>
         
     </DockPanel>
