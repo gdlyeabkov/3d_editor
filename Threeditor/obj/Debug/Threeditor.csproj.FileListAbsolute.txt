@@ -14,3 +14,13 @@ C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.csproj.GenerateResour
 C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.csproj.CoreCompileInputs.cache
 C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.exe
 C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.pdb
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Syncfusion.Licensing.dll
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Syncfusion.SfColorPalette.WPF.dll
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Syncfusion.SfRadialMenu.WPF.dll
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Syncfusion.Shared.WPF.dll
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Syncfusion.Tools.WPF.dll
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Syncfusion.SfColorPalette.WPF.xml
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Syncfusion.SfRadialMenu.WPF.xml
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Syncfusion.Shared.WPF.xml
+C:\wpf_projects\Threeditor\Threeditor\bin\Debug\Syncfusion.Tools.WPF.xml
+C:\wpf_projects\Threeditor\Threeditor\obj\Debug\Threeditor.csproj.CopyComplete

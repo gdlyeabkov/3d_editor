@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Threeditor"
         mc:Ignorable="d"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
         WindowState="Maximized" Title="3D редактор" Height="450" Width="800" KeyUp="GlobalHotKeysHandler">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -61,87 +62,128 @@
                         <TextBlock Margin="5" Text="Свет" />
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Background="LightGray">
-                    <StackPanel Width="50">
-                        <TextBlock Text="⛶" Margin="5" />
-                        <TextBlock Text="⛶" Margin="5" />
-                        <TextBlock Text="⛶" Margin="5" />
-                        <TextBlock Text="⛶" Margin="5" />
-                        <TextBlock Text="⛶" Margin="5" />
-                        <TextBlock Text="⛶" Margin="5" />
+                <StackPanel Height="680" Orientation="Horizontal" Background="LightGray">
+                    <StackPanel Width="50" Background="Black">
+                        <TextBlock Text="⛶" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" DataContext="0" MouseUp="ToggleTabHandler" />
+                        <TextBlock Text="🔮" Margin="5" Foreground="Orange" FontSize="14" FontWeight="ExtraBlack" HorizontalAlignment="Center" DataContext="1" MouseUp="ToggleTabHandler" />
+                        <TextBlock Text="🔧" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" DataContext="2" MouseUp="ToggleTabHandler" />
+                        <TextBlock Text="⛶" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" />
+                        <TextBlock Text="⛶" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" />
+                        <TextBlock Text="⛶" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" />
                     </StackPanel>
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="5" Text="⮟" MouseUp="ToggleTransformSettingsHandler" />
-                            <TextBlock Margin="5" Text="Трансформация" />
-                        </StackPanel>
-                        <StackPanel x:Name="transformSettings">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" Width="65" Text="Положение" />
-                                <TextBlock Margin="5" Text="X" />
-                                <TextBox x:Name="transformXLocation" Margin="5" Width="50" Text="0m" KeyUp="SetXLocationHandler" />
-                                <TextBlock Margin="5" Text="🔒" />
+                    <TabControl x:Name="tabs" Background="Transparent" BorderThickness="0">
+                        <TabItem Header="0" Visibility="Hidden">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Margin="5" Text="⛶" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" />
+                                    <TextBlock x:Name="transformSelectedMeshName" Margin="5" Text="Куб" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <ComboBox x:Name="transformMeshSelector" SelectedIndex="1" DropDownClosed="SelectMeshFromListHandler">
+                                    <ComboBoxItem Content="Камера" />
+                                    <ComboBoxItem Content="Куб" />
+                                    <ComboBoxItem Content="Свет" />
+                                </ComboBox>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="5" Text="⮟" MouseUp="ToggleTransformSettingsHandler" />
+                                    <TextBlock Margin="5" Text="Трансформация" />
+                                </StackPanel>
+                                <StackPanel x:Name="transformSettings">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Width="65" Text="Положение" />
+                                        <TextBlock Margin="5" Text="X" />
+                                        <TextBox x:Name="transformXLocation" Margin="5" Width="50" Text="0m" KeyUp="SetXLocationHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Text="" Width="65" />
+                                        <TextBlock Margin="5" Text="Y" />
+                                        <TextBox x:Name="transformYLocation" Margin="5" Width="50" Text="0m" KeyUp="SetYLocationHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Text="" Width="65" />
+                                        <TextBlock Margin="5" Text="Z" />
+                                        <TextBox x:Name="transformZLocation" Margin="5" Width="50" Text="0m" KeyUp="SetZLocationHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Width="65" Text="Поворот" />
+                                        <TextBlock Margin="5" Text="X" />
+                                        <TextBox x:Name="transformXRotation" Margin="5" Width="50" Text="0m" KeyUp="SetXRotationHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Text="" Width="65" />
+                                        <TextBlock Margin="5" Text="Y" />
+                                        <TextBox x:Name="transformYRotation" Margin="5" Width="50" Text="0m" KeyUp="SetYRotationHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Text="" Width="65" />
+                                        <TextBlock Margin="5" Text="Z" />
+                                        <TextBox x:Name="transformZRotation" Margin="5" Width="50" Text="0m" KeyUp="SetZRotationHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Width="65" Text="Масштаб" />
+                                        <TextBlock Margin="5" Text="X" />
+                                        <TextBox x:Name="transformXScale" Margin="5" Width="50" Text="0m" KeyUp="SetXScaleHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Text="" Width="65" />
+                                        <TextBlock Margin="5" Text="Y" />
+                                        <TextBox x:Name="transformYScale" Margin="5" Width="50" Text="0m" KeyUp="SetYScaleHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Text="" Width="65" />
+                                        <TextBlock Margin="5" Text="Z" />
+                                        <TextBox x:Name="transformZScale" Margin="5" Width="50" Text="0m" KeyUp="SetZScaleHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="5" Text="⮟" MouseUp="ToggleRelationSettingsHandler" />
+                                    <TextBlock Margin="5" Text="Отношения" />
+                                </StackPanel>
+                                <StackPanel x:Name="relationSettings">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Width="65" Text="Родитель" />
+                                        <ComboBox x:Name="relationParent" Margin="5" Width="50" Text="0m" DropDownClosed="SetPossibleParentHandler" DropDownOpened="GetPossibleParentsHandler" />
+                                    </StackPanel>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" Text="" Width="65" />
-                                <TextBlock Margin="5" Text="Y" />
-                                <TextBox x:Name="transformYLocation" Margin="5" Width="50" Text="0m" KeyUp="SetYLocationHandler" />
-                                <TextBlock Margin="5" Text="🔒" />
+                        </TabItem>
+                        <TabItem Header="1" Visibility="Hidden">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="5" Text="⮟" MouseUp="ToggleDisplaySettingsHandler" />
+                                    <TextBlock Margin="5" Text="Отображение" />
+                                </StackPanel>
+                                <StackPanel x:Name="displaySettings">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Width="65" Text="Цвет" />
+                                        <TextBox Margin="5" Width="50" Text="0m" KeyUp="SetColorHandler" />
+                                    </StackPanel>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" Text="" Width="65" />
-                                <TextBlock Margin="5" Text="Z" />
-                                <TextBox x:Name="transformZLocation" Margin="5" Width="50" Text="0m" KeyUp="SetZLocationHandler" />
-                                <TextBlock Margin="5" Text="🔒" />
+                        </TabItem>
+                        <TabItem Header="2" Visibility="Hidden">
+                            <StackPanel>
+                                <StackPanel>
+                                    <ComboBox x:Name="embeddedModifiers" SelectedIndex="0" DropDownOpened="GetModifiersHandler" DropDownClosed="AddModifierHandler">
+                                        <ComboBoxItem Content="Добавить модификатор" IsEnabled="False" Visibility="Collapsed" />
+                                        <ComboBoxItem Content="Массив" />
+                                        <ComboBoxItem Content="Сетка" />
+                                    </ComboBox>
+                                    <StackPanel x:Name="modifiers">
+                                        
+                                    </StackPanel>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" Width="65" Text="Поворот" />
-                                <TextBlock Margin="5" Text="X" />
-                                <TextBox x:Name="transformXRotation" Margin="5" Width="50" Text="0m" KeyUp="SetXRotationHandler" />
-                                <TextBlock Margin="5" Text="🔒" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" Text="" Width="65" />
-                                <TextBlock Margin="5" Text="Y" />
-                                <TextBox x:Name="transformYRotation" Margin="5" Width="50" Text="0m" KeyUp="SetYRotationHandler" />
-                                <TextBlock Margin="5" Text="🔒" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" Text="" Width="65" />
-                                <TextBlock Margin="5" Text="Z" />
-                                <TextBox x:Name="transformZRotation" Margin="5" Width="50" Text="0m" KeyUp="SetZRotationHandler" />
-                                <TextBlock Margin="5" Text="🔒" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" Width="65" Text="Масштаб" />
-                                <TextBlock Margin="5" Text="X" />
-                                <TextBox x:Name="transformXScale" Margin="5" Width="50" Text="0m" KeyUp="SetXScaleHandler" />
-                                <TextBlock Margin="5" Text="🔒" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" Text="" Width="65" />
-                                <TextBlock Margin="5" Text="Y" />
-                                <TextBox x:Name="transformYScale" Margin="5" Width="50" Text="0m" KeyUp="SetYScaleHandler" />
-                                <TextBlock Margin="5" Text="🔒" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" Text="" Width="65" />
-                                <TextBlock Margin="5" Text="Z" />
-                                <TextBox x:Name="transformZScale" Margin="5" Width="50" Text="0m" KeyUp="SetZScaleHandler" />
-                                <TextBlock Margin="5" Text="🔒" />
-                            </StackPanel>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="5" Text="⮟" MouseUp="ToggleRelationSettingsHandler" />
-                            <TextBlock Margin="5" Text="Отношения" />
-                        </StackPanel>
-                        <StackPanel x:Name="relationSettings">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" Width="65" Text="Родитель" />
-                                <ComboBox x:Name="relationParent" Margin="5" Width="50" Text="0m" DropDownClosed="SetPossibleParentHandler" DropDownOpened="GetPossibleParentsHandler" />
-                            </StackPanel>
-                        </StackPanel>
-                    </StackPanel>
+                        </TabItem>
+                    </TabControl>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

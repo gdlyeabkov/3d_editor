@@ -57,8 +57,9 @@ namespace Threeditor
             meshs = new List<Dictionary<String, Object>>();
             Dictionary<String, Object>  defaultMesh = new Dictionary<String, Object>();
             defaultMesh.Add("index", ((int)(1)));
-            defaultMesh.Add("name", "куб");
+            defaultMesh.Add("name", "Куб");
             defaultMesh.Add("parent", "none");
+            defaultMesh.Add("modifiers", new List<Dictionary<String, Object>>());
             meshs.Add(defaultMesh);
         }
 
@@ -131,7 +132,20 @@ namespace Threeditor
                         currentMeshIdx = meshs.IndexOf(mesh);
                     }
                 }
-                // parmeshs[currentMeshIdx]["name"];
+                List<Dictionary<String, Object>> childs = meshs.Where<Dictionary<String, Object>>((mesh) => mesh["parent"].ToString() == meshs[currentMeshIdx]["name"].ToString()).ToList<Dictionary<String, Object>>();
+                foreach (Dictionary<String, Object> child in childs)
+                {
+                    foreach (ModelVisual3D mesh in space.Children)
+                    {
+                        if (space.Children.IndexOf(mesh) == ((int)(child["index"])))
+                        {
+                            Model3D model = ((Model3D)(mesh.Content));
+                            Transform3DGroup transform = ((Transform3DGroup)(model.Transform));
+                            TranslateTransform3D transformTranslate = ((TranslateTransform3D)(transform.Children[0]));
+                            transformTranslate.OffsetX = settedPropertyValue + settedPropertyValue;
+                        }
+                    }
+                }
 
             }
         }
@@ -146,6 +160,30 @@ namespace Threeditor
                 Transform3DGroup currentMeshTransform = ((Transform3DGroup)(currentMeshModel.Transform));
                 TranslateTransform3D currentMeshTransformTranslate = ((TranslateTransform3D)(currentMeshTransform.Children[0]));
                 currentMeshTransformTranslate.OffsetY = settedPropertyValue;
+
+                int currentMeshIdx = 0;
+                foreach (Dictionary<String, Object> mesh in meshs)
+                {
+                    if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                    {
+                        currentMeshIdx = meshs.IndexOf(mesh);
+                    }
+                }
+                List<Dictionary<String, Object>> childs = meshs.Where<Dictionary<String, Object>>((mesh) => mesh["parent"].ToString() == meshs[currentMeshIdx]["name"].ToString()).ToList<Dictionary<String, Object>>();
+                foreach (Dictionary<String, Object> child in childs)
+                {
+                    foreach (ModelVisual3D mesh in space.Children)
+                    {
+                        if (space.Children.IndexOf(mesh) == ((int)(child["index"])))
+                        {
+                            Model3D model = ((Model3D)(mesh.Content));
+                            Transform3DGroup transform = ((Transform3DGroup)(model.Transform));
+                            TranslateTransform3D transformTranslate = ((TranslateTransform3D)(transform.Children[0]));
+                            transformTranslate.OffsetY = settedPropertyValue + settedPropertyValue;
+                        }
+                    }
+                }
+
             }
         }
 
@@ -159,6 +197,30 @@ namespace Threeditor
                 Transform3DGroup currentMeshTransform = ((Transform3DGroup)(currentMeshModel.Transform));
                 TranslateTransform3D currentMeshTransformTranslate = ((TranslateTransform3D)(currentMeshTransform.Children[0]));
                 currentMeshTransformTranslate.OffsetZ = settedPropertyValue;
+
+                int currentMeshIdx = 0;
+                foreach (Dictionary<String, Object> mesh in meshs)
+                {
+                    if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                    {
+                        currentMeshIdx = meshs.IndexOf(mesh);
+                    }
+                }
+                List<Dictionary<String, Object>> childs = meshs.Where<Dictionary<String, Object>>((mesh) => mesh["parent"].ToString() == meshs[currentMeshIdx]["name"].ToString()).ToList<Dictionary<String, Object>>();
+                foreach (Dictionary<String, Object> child in childs)
+                {
+                    foreach (ModelVisual3D mesh in space.Children)
+                    {
+                        if (space.Children.IndexOf(mesh) == ((int)(child["index"])))
+                        {
+                            Model3D model = ((Model3D)(mesh.Content));
+                            Transform3DGroup transform = ((Transform3DGroup)(model.Transform));
+                            TranslateTransform3D transformTranslate = ((TranslateTransform3D)(transform.Children[0]));
+                            transformTranslate.OffsetZ = settedPropertyValue + settedPropertyValue;
+                        }
+                    }
+                }
+
             }
         }
 
@@ -356,7 +418,17 @@ namespace Threeditor
             newMesh.Add("index", ((int)(space.Children.IndexOf(gameObjectMesh))));
             newMesh.Add("name", newSceneCollectionItemIcon.Text);
             newMesh.Add("parent", "none");
+            newMesh.Add("modifiers", new List<Dictionary<String, Object>>());
             meshs.Add(newMesh);
+
+            transformSelectedMeshName.Text = newMesh["name"].ToString();
+            ComboBoxItem selectableMesh = new ComboBoxItem();
+            selectableMesh.Content = transformSelectedMeshName.Text;
+            transformMeshSelector.Items.Insert(transformMeshSelector.Items.Count - 1, selectableMesh);
+            transformMeshSelector.SelectedIndex = transformMeshSelector.Items.Count - 2;
+
+            modifiers.Children.Clear();
+            embeddedModifiers.SelectedIndex = 0;
 
         }
 
@@ -383,6 +455,40 @@ namespace Threeditor
             transformXScale.Text = currentMeshTransformScale.ScaleX.ToString();
             transformYScale.Text = currentMeshTransformScale.ScaleY.ToString();
             transformZScale.Text = currentMeshTransformScale.ScaleZ.ToString();
+
+            int currentMeshIdx = 0;
+            foreach (Dictionary<String, Object> mesh in meshs)
+            {
+                if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                {
+                    currentMeshIdx = meshs.IndexOf(mesh);
+                }
+            }
+            transformSelectedMeshName.Text = meshs[currentMeshIdx]["name"].ToString();
+            transformMeshSelector.SelectedIndex = ((int)(meshs[currentMeshIdx]["index"]));
+            ComboBoxItem parent = null;
+            foreach (ComboBoxItem possibleParent in relationParent.Items) {
+                if (possibleParent.Content.ToString() == meshs[currentMeshIdx]["parent"])
+                {
+                    parent = possibleParent;
+                }
+            }
+            relationParent.SelectedItem = ((ComboBoxItem)(parent));
+
+            modifiers.Children.Clear();
+            embeddedModifiers.SelectedIndex = 0;
+            foreach (Dictionary<String, Object> modifier in ((List<Dictionary<String, Object>>)(meshs[currentMeshIdx]["modifiers"])))
+            {
+                StackPanel newModifier = new StackPanel();
+                newModifier.Orientation = Orientation.Horizontal;
+                newModifier.Margin = new Thickness(0, 5, 0, 5);
+                TextBlock newModifierName = new TextBlock();
+                newModifierName.Margin = new Thickness(5, 0, 5, 0);
+                newModifierName.Text = modifier["name"].ToString();
+                newModifier.Children.Add(newModifierName);
+                modifiers.Children.Add(newModifier);
+            }
+
         }
 
         private void Set3DCursorLocationHandler(object sender, MouseButtonEventArgs e)
@@ -498,11 +604,197 @@ namespace Threeditor
         {
             ComboBox parentSelector = ((ComboBox)(sender));
             parentSelector.Items.Clear();
+
+            int currentMeshIdx = 0;
+            foreach (Dictionary<String, Object> mesh in meshs)
+            {
+                if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                {
+                    currentMeshIdx = meshs.IndexOf(mesh);
+                }
+            }
+
             foreach (StackPanel sceneCollectionItem in sceneCollection.Children)
             {
                 ComboBoxItem possibleParent = new ComboBoxItem();
                 possibleParent.Content = ((TextBlock)(sceneCollectionItem.Children[1])).Text;
                 parentSelector.Items.Add(possibleParent);
+
+                if (possibleParent.Content.ToString() == meshs[currentMeshIdx]["name"].ToString())
+                {
+                    possibleParent.IsEnabled = false;
+                }
+
+            }
+        }
+
+        private void ToggleTabHandler(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock tab = ((TextBlock)(sender));
+            int tabParam = Int32.Parse(tab.DataContext.ToString());
+            tabs.SelectedIndex = tabParam;
+        }
+
+        private void ToggleDisplaySettingsHandler(object sender, RoutedEventArgs e)
+        {
+            TextBlock toggler = ((TextBlock)(sender));
+            if (displaySettings.Visibility == Visibility.Visible)
+            {
+                displaySettings.Visibility = Visibility.Collapsed;
+                toggler.Text = "➤";
+            }
+            else if (displaySettings.Visibility == Visibility.Collapsed)
+            {
+                displaySettings.Visibility = Visibility.Visible;
+                toggler.Text = "⮟";
+            }
+        }
+
+        private void SetColorHandler(object sender, KeyEventArgs e)
+        {
+            if (Key.Enter == e.Key) {
+                TextBox inputField = ((TextBox)(sender));
+                string rawColor = inputField.Text;
+                string[] colorChannels = rawColor.Split(new Char[] { ',' });
+                GeometryModel3D currentMeshModel = ((GeometryModel3D)(selectedMesh.Content));
+                MaterialGroup currentMeshMaterialGroup = ((MaterialGroup)(currentMeshModel.Material));
+                DiffuseMaterial currentMeshMaterial = new DiffuseMaterial();
+                /*Color colour = new Color();
+                colour.R = Byte.Parse(colorChannels[0]);
+                colour.G = Byte.Parse(colorChannels[1]);
+                colour.B = Byte.Parse(colorChannels[2]);
+                debugger.Speak(colorChannels[0]);
+                debugger.Speak(colorChannels[1]);
+                debugger.Speak(colorChannels[2]);
+                currentMeshMaterial.Color = colour;*/
+                currentMeshMaterial.Brush = Brushes.Black;
+                currentMeshMaterialGroup.Children.Add(currentMeshMaterial);
+            }
+        }
+
+        private void SelectMeshFromListHandler(object sender, EventArgs e)
+        {
+            ComboBox meshList = ((ComboBox)(sender));
+            if (meshList.SelectedIndex >= 0) {
+                StackPanel currentSceneCollectionItem = ((StackPanel)(sceneCollection.Children[meshList.SelectedIndex + 1]));
+                foreach (StackPanel sceneCollectionItem in sceneCollection.Children)
+                {
+                    sceneCollectionItem.Background = System.Windows.Media.Brushes.Transparent;
+                }
+                currentSceneCollectionItem.Background = System.Windows.Media.Brushes.SkyBlue;
+                selectedMesh = (ModelVisual3D)space.Children[sceneCollection.Children.IndexOf(currentSceneCollectionItem) - 1];
+                Model3D currentMeshModel = ((Model3D)(selectedMesh.Content));
+                Transform3DGroup currentMeshTransform = ((Transform3DGroup)(currentMeshModel.Transform));
+                TranslateTransform3D currentMeshTransformTranslate = ((TranslateTransform3D)(currentMeshTransform.Children[0]));
+                transformXLocation.Text = currentMeshTransformTranslate.OffsetX.ToString();
+                transformYLocation.Text = currentMeshTransformTranslate.OffsetY.ToString();
+                transformZLocation.Text = currentMeshTransformTranslate.OffsetZ.ToString();
+                RotateTransform3D currentMeshTransformRotate = ((RotateTransform3D)(currentMeshTransform.Children[2]));
+                transformXRotation.Text = ((AxisAngleRotation3D)(currentMeshTransformRotate.Rotation)).Angle.ToString();
+                transformYRotation.Text = ((AxisAngleRotation3D)(currentMeshTransformRotate.Rotation)).Angle.ToString();
+                transformZRotation.Text = ((AxisAngleRotation3D)(currentMeshTransformRotate.Rotation)).Angle.ToString();
+                ScaleTransform3D currentMeshTransformScale = ((ScaleTransform3D)(currentMeshTransform.Children[1]));
+                transformXScale.Text = currentMeshTransformScale.ScaleX.ToString();
+                transformYScale.Text = currentMeshTransformScale.ScaleY.ToString();
+                transformZScale.Text = currentMeshTransformScale.ScaleZ.ToString();
+
+                int currentMeshIdx = 0;
+                foreach (Dictionary<String, Object> mesh in meshs)
+                {
+                    if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                    {
+                        currentMeshIdx = meshs.IndexOf(mesh);
+                    }
+                }
+                transformSelectedMeshName.Text = meshs[currentMeshIdx]["name"].ToString();
+                transformMeshSelector.SelectedIndex = ((int)(meshs[currentMeshIdx]["index"]));
+                ComboBoxItem parent = null;
+                foreach (ComboBoxItem possibleParent in relationParent.Items)
+                {
+                    if (possibleParent.Content.ToString() == meshs[currentMeshIdx]["parent"])
+                    {
+                        parent = possibleParent;
+                    }
+                }
+                relationParent.SelectedItem = ((ComboBoxItem)(parent));
+
+                modifiers.Children.Clear();
+                embeddedModifiers.SelectedIndex = 0;
+                foreach (Dictionary<String, Object> modifier in ((List<Dictionary<String, Object>>)(meshs[currentMeshIdx]["modifiers"])))
+                {
+                    StackPanel newModifier = new StackPanel();
+                    newModifier.Orientation = Orientation.Horizontal;
+                    newModifier.Margin = new Thickness(0, 5, 0, 5);
+                    TextBlock newModifierName = new TextBlock();
+                    newModifierName.Margin = new Thickness(5, 0, 5, 0);
+                    newModifierName.Text = modifier["name"].ToString();
+                    newModifier.Children.Add(newModifierName);
+                    modifiers.Children.Add(newModifier);
+                }
+
+            }
+        }
+
+        private void AddModifierHandler(object sender, EventArgs e)
+        {
+            ComboBox modifiersList = ((ComboBox)(sender));
+            
+            int currentMeshIdx = 0;
+            foreach (Dictionary<String, Object> mesh in meshs)
+            {
+                if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                {
+                    currentMeshIdx = meshs.IndexOf(mesh);
+                }
+            }
+
+            if (modifiersList.SelectedIndex >= 0 && ((ComboBoxItem)(modifiersList.Items[modifiersList.SelectedIndex])).IsEnabled)
+            {
+                StackPanel newModifier = new StackPanel();
+                newModifier.Orientation = Orientation.Horizontal;
+                newModifier.Margin = new Thickness(0, 5, 0, 5);
+                TextBlock newModifierName = new TextBlock();
+                newModifierName.Margin = new Thickness(5, 0, 5, 0);
+                newModifierName.Text = ((ComboBoxItem)(modifiersList.Items[modifiersList.SelectedIndex])).Content.ToString();
+                newModifier.Children.Add(newModifierName);
+                modifiers.Children.Add(newModifier);
+
+                Dictionary<String, Object> addedModifier = new Dictionary<String, Object>();
+                addedModifier.Add("name", ((ComboBoxItem)(modifiersList.Items[modifiersList.SelectedIndex])).Content.ToString());
+                ((List<Dictionary<String, Object>>)(meshs[currentMeshIdx]["modifiers"])).Add(addedModifier);
+
+            }
+            foreach (ComboBoxItem modifier in modifiersList.Items)
+            {
+                modifier.IsEnabled = true;
+            }
+
+            embeddedModifiers.SelectedIndex = 0;
+
+        }
+
+        private void GetModifiersHandler(object sender, EventArgs e)
+        {
+            ComboBox modifiersList = ((ComboBox)(sender));
+
+            int currentMeshIdx = 0;
+            foreach (Dictionary<String, Object> mesh in meshs)
+            {
+                if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                {
+                    currentMeshIdx = meshs.IndexOf(mesh);
+                }
+            }
+
+            foreach (ComboBoxItem modifier in modifiersList.Items)
+            {
+                if (((List<Dictionary<String, Object>>)(meshs[currentMeshIdx]["modifiers"])).Where<Dictionary<String, Object>>((possibleModifier) => possibleModifier["name"].ToString() == modifier.Content.ToString()).Count() >= 1)
+                {
+                    modifier.IsEnabled = false;
+                } else
+                {
+                    modifier.IsEnabled = true;
+                }
             }
         }
     }
