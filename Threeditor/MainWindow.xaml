@@ -67,7 +67,7 @@
                         <TextBlock Text="⛶" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" DataContext="0" MouseUp="ToggleTabHandler" />
                         <TextBlock Text="🔮" Margin="5" Foreground="Orange" FontSize="14" FontWeight="ExtraBlack" HorizontalAlignment="Center" DataContext="1" MouseUp="ToggleTabHandler" />
                         <TextBlock Text="🔧" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" DataContext="2" MouseUp="ToggleTabHandler" />
-                        <TextBlock Text="⛶" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" />
+                        <TextBlock Text="🛆" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" DataContext="3" MouseUp="ToggleTabHandler" />
                         <TextBlock Text="⛶" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" />
                         <TextBlock Text="⛶" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" />
                     </StackPanel>
@@ -183,6 +183,68 @@
                                 </StackPanel>
                             </StackPanel>
                         </TabItem>
+                        <TabItem Header="3" Visibility="Hidden">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Margin="5" Text="⛶" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" />
+                                    <TextBlock x:Name="propsSelectedMeshName" Margin="5" Text="Куб" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="5" Text="⮟" MouseUp="ToggleNormalsSettingsHandler" />
+                                    <TextBlock Margin="5" Text="Нормали" />
+                                </StackPanel>
+                                <StackPanel x:Name="normalsSettings">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Width="65" Text="Авто сглаживание" />
+                                        <CheckBox x:Name="normalsSmooth" Margin="5" IsChecked="False" />
+                                        <TextBox x:Name="normalsAngle" Margin="5" Width="50" Text="0m" KeyUp="SetNormalsAngleHandler" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="5" Text="⮟" MouseUp="ToggleTexturesSettingsHandler" />
+                                    <TextBlock Margin="5" Text="Текстуры" />
+                                </StackPanel>
+                                <StackPanel x:Name="texturesSettings">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Width="65" Text="Положение" />
+                                        <TextBlock Margin="5" Text="X" />
+                                        <TextBox x:Name="textureXLocation" Margin="5" Width="50" Text="0m" KeyUp="SetTextureXLocationHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Text="" Width="65" />
+                                        <TextBlock Margin="5" Text="Y" />
+                                        <TextBox x:Name="textureYLocation" Margin="5" Width="50" Text="0m" KeyUp="SetTextureYLocationHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Text="" Width="65" />
+                                        <TextBlock Margin="5" Text="Z" />
+                                        <TextBox x:Name="textureZLocation" Margin="5" Width="50" Text="0m" KeyUp="SetTextureZLocationHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Width="65" Text="Масштаб" />
+                                        <TextBlock Margin="5" Text="X" />
+                                        <TextBox x:Name="textureXScale" Margin="5" Width="50" Text="0m" KeyUp="SetTextureXScaleHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Text="" Width="65" />
+                                        <TextBlock Margin="5" Text="Y" />
+                                        <TextBox x:Name="textureYScale" Margin="5" Width="50" Text="0m" KeyUp="SetTextureYScaleHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="5" Text="" Width="65" />
+                                        <TextBlock Margin="5" Text="Z" />
+                                        <TextBox x:Name="textureZScale" Margin="5" Width="50" Text="0m" KeyUp="SetTextureZScaleHandler" />
+                                        <TextBlock Margin="5" Text="🔒" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem>
+
                     </TabControl>
                 </StackPanel>
             </StackPanel>
@@ -266,8 +328,10 @@
                                 <GeometryModel3D>
                                     <GeometryModel3D.Geometry>
                                         <MeshGeometry3D
-                                     TriangleIndices="0 1 3 1 2 3 0 4 3 4 7 3 4 6 7 4 5 6 0 4 1 1 4 5 1 2 6 6 5 1 2 3 7 7 6 2"
-                                     Positions="0, 0, 0 1, 0, 0 1, 1, 0 0, 1, 0 0, 0, 1 1, 0, 1 1, 1, 1 0, 1, 1" />
+                                            Normals="0 0 1  0 0 1  0 0 1  0 0 1"
+                                            TextureCoordinates="0 1  1 1  0 0  1 0"
+                                            TriangleIndices="0 1 3 1 2 3 0 4 3 4 7 3 4 6 7 4 5 6 0 4 1 1 4 5 1 2 6 6 5 1 2 3 7 7 6 2"
+                                            Positions="0, 0, 0 1, 0, 0 1, 1, 0 0, 1, 0 0, 0, 1 1, 0, 1 1, 1, 1 0, 1, 1" />
                                     </GeometryModel3D.Geometry>
                                     <GeometryModel3D.Material>
                                         <MaterialGroup>

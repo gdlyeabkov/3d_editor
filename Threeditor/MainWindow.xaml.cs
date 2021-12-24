@@ -60,6 +60,7 @@ namespace Threeditor
             defaultMesh.Add("name", "Куб");
             defaultMesh.Add("parent", "none");
             defaultMesh.Add("modifiers", new List<Dictionary<String, Object>>());
+            defaultMesh.Add("normals", 45);
             meshs.Add(defaultMesh);
         }
 
@@ -419,6 +420,7 @@ namespace Threeditor
             newMesh.Add("name", newSceneCollectionItemIcon.Text);
             newMesh.Add("parent", "none");
             newMesh.Add("modifiers", new List<Dictionary<String, Object>>());
+            newMesh.Add("normals", 45);
             meshs.Add(newMesh);
 
             transformSelectedMeshName.Text = newMesh["name"].ToString();
@@ -797,5 +799,216 @@ namespace Threeditor
                 }
             }
         }
+
+        private void SetNormalsAngleHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter) {
+                int currentMeshIdx = 0;
+                foreach (Dictionary<String, Object> mesh in meshs)
+                {
+                    if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                    {
+                        currentMeshIdx = meshs.IndexOf(mesh);
+                    }
+                }
+                meshs[currentMeshIdx]["normals"] = Single.Parse(normalsAngle.Text);
+
+                bool isSmooth = ((bool)(normalsSmooth.IsChecked));
+                if (isSmooth)
+                {
+                    meshs[currentMeshIdx]["normals"] = ((float)(Math.Floor(((float)(meshs[currentMeshIdx]["normals"])))));
+                }
+
+                float currentNormals = ((float)(meshs[currentMeshIdx]["normals"]));
+                Vector3DCollection normals = new Vector3DCollection();
+                Vector3D normal = new Vector3D(currentNormals / 30 >= 1.0 ? 1 : 0, currentNormals / 60 >= 1.0 ? 1 : 0, currentNormals / 90 >= 1.0 ? 1 : 0);
+                normals.Add(normal);
+                normal = new Vector3D(currentNormals / 120 >= 1.0 ? 1 : 0, currentNormals / 150 >= 1.0 ? 1 : 0, currentNormals / 180 >= 1.0 ? 1 : 0);
+                normals.Add(normal);
+                normal = new Vector3D(currentNormals / 210 >= 1.0 ? 1 : 0, currentNormals / 240 >= 1.0 ? 1 : 0, currentNormals / 270 >= 1.0 ? 1 : 0);
+                normals.Add(normal);
+                normal = new Vector3D(currentNormals / 300 >= 1.0 ? 1 : 0, currentNormals / 330 >= 1.0 ? 1 : 0, currentNormals / 360 >= 1.0 ? 1 : 0);
+                normals.Add(normal);
+                ((MeshGeometry3D)(((GeometryModel3D)(selectedMesh.Content)).Geometry)).Normals = normals;
+
+            }
+
+        }
+
+        private void SetNormalsSmoothHandler(object sender, KeyEventArgs e)
+        {
+            CheckBox checkbox = ((CheckBox)(sender));
+            bool isSmooth = ((bool)(checkbox.IsChecked));
+            int currentMeshIdx = 0;
+            foreach (Dictionary<String, Object> mesh in meshs)
+            {
+                if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                {
+                    currentMeshIdx = meshs.IndexOf(mesh);
+                }
+            }
+            if (isSmooth)
+            {
+                meshs[currentMeshIdx]["normals"] = ((float)(Math.Floor(((float)(meshs[currentMeshIdx]["normals"])))));
+            }
+
+            float currentNormals = ((float)(meshs[currentMeshIdx]["normals"]));
+            Vector3DCollection normals = new Vector3DCollection();
+            Vector3D normal = new Vector3D(currentNormals / 30 >= 1.0 ? 1 : 0, currentNormals / 60 >= 1.0 ? 1 : 0, currentNormals / 90 >= 1.0 ? 1 : 0);
+            normals.Add(normal);
+            normal = new Vector3D(currentNormals / 120 >= 1.0 ? 1 : 0, currentNormals / 150 >= 1.0 ? 1 : 0, currentNormals / 180 >= 1.0 ? 1 : 0);
+            normals.Add(normal);
+            normal = new Vector3D(currentNormals / 210 >= 1.0 ? 1 : 0, currentNormals / 240 >= 1.0 ? 1 : 0, currentNormals / 270 >= 1.0 ? 1 : 0);
+            normals.Add(normal);
+            normal = new Vector3D(currentNormals / 300 >= 1.0 ? 1 : 0, currentNormals / 330 >= 1.0 ? 1 : 0, currentNormals / 360 >= 1.0 ? 1 : 0);
+            normals.Add(normal);
+            ((MeshGeometry3D)(((GeometryModel3D)(selectedMesh.Content)).Geometry)).Normals = normals;
+
+        }
+
+        private void ToggleNormalsSettingsHandler(object sender, RoutedEventArgs e)
+        {
+            TextBlock toggler = ((TextBlock)(sender));
+            if (normalsSettings.Visibility == Visibility.Visible)
+            {
+                normalsSettings.Visibility = Visibility.Collapsed;
+                toggler.Text = "➤";
+            }
+            else if (transformSettings.Visibility == Visibility.Collapsed)
+            {
+                normalsSettings.Visibility = Visibility.Visible;
+                toggler.Text = "⮟";
+            }
+        }
+
+        private void ToggleTexturesSettingsHandler(object sender, RoutedEventArgs e)
+        {
+            TextBlock toggler = ((TextBlock)(sender));
+            if (texturesSettings.Visibility == Visibility.Visible)
+            {
+                texturesSettings.Visibility = Visibility.Collapsed;
+                toggler.Text = "➤";
+            }
+            else if (transformSettings.Visibility == Visibility.Collapsed)
+            {
+                texturesSettings.Visibility = Visibility.Visible;
+                toggler.Text = "⮟";
+            }
+        }
+
+        private void SetTextureXLocationHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                debugger.Speak("Задал текстурные координаты положения по оси X");
+                TextBox settedProperty = ((TextBox)(sender));
+                int settedPropertyValue = Int32.Parse(settedProperty.Text);
+                GeometryModel3D currentMeshModel = ((GeometryModel3D)(selectedMesh.Content));
+                MeshGeometry3D currentMeshTransform = ((MeshGeometry3D)(currentMeshModel.Geometry));
+                PointCollection textures = new PointCollection();
+                textures.Add(new Point(settedPropertyValue, currentMeshTransform.TextureCoordinates[0].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[1].X, currentMeshTransform.TextureCoordinates[1].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[2].X, currentMeshTransform.TextureCoordinates[2].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[3].X, currentMeshTransform.TextureCoordinates[3].Y));
+                currentMeshTransform.TextureCoordinates = textures;
+
+            }
+        }
+
+        private void SetTextureYLocationHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                debugger.Speak("Задал текстурные координаты положения по оси y");
+                TextBox settedProperty = ((TextBox)(sender));
+                int settedPropertyValue = Int32.Parse(settedProperty.Text);
+                GeometryModel3D currentMeshModel = ((GeometryModel3D)(selectedMesh.Content));
+                MeshGeometry3D currentMeshTransform = ((MeshGeometry3D)(currentMeshModel.Geometry));
+                PointCollection textures = new PointCollection();
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[0].X, settedPropertyValue));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[1].X, currentMeshTransform.TextureCoordinates[1].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[2].X, currentMeshTransform.TextureCoordinates[2].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[3].X, currentMeshTransform.TextureCoordinates[3].Y));
+                currentMeshTransform.TextureCoordinates = textures;
+
+            }
+        }
+
+        private void SetTextureZLocationHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                debugger.Speak("Задал текстурные координаты положения по оси Z");
+                TextBox settedProperty = ((TextBox)(sender));
+                int settedPropertyValue = Int32.Parse(settedProperty.Text);
+                GeometryModel3D currentMeshModel = ((GeometryModel3D)(selectedMesh.Content));
+                MeshGeometry3D currentMeshTransform = ((MeshGeometry3D)(currentMeshModel.Geometry));
+                PointCollection textures = new PointCollection();
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[0].X, currentMeshTransform.TextureCoordinates[0].Y));
+                textures.Add(new Point(settedPropertyValue, settedPropertyValue));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[2].X, currentMeshTransform.TextureCoordinates[2].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[3].X, currentMeshTransform.TextureCoordinates[3].Y));
+                currentMeshTransform.TextureCoordinates = textures;
+
+            }
+        }
+
+        private void SetTextureXScaleHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                debugger.Speak("Задал текстурные координаты размера по оси x");
+                TextBox settedProperty = ((TextBox)(sender));
+                int settedPropertyValue = Int32.Parse(settedProperty.Text);
+                GeometryModel3D currentMeshModel = ((GeometryModel3D)(selectedMesh.Content));
+                MeshGeometry3D currentMeshTransform = ((MeshGeometry3D)(currentMeshModel.Geometry));
+                PointCollection textures = new PointCollection();
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[0].X, currentMeshTransform.TextureCoordinates[0].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[1].X, currentMeshTransform.TextureCoordinates[1].Y));
+                textures.Add(new Point(settedPropertyValue, currentMeshTransform.TextureCoordinates[2].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[3].X, currentMeshTransform.TextureCoordinates[3].Y));
+                currentMeshTransform.TextureCoordinates = textures;
+
+            }
+        }
+
+        private void SetTextureYScaleHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                debugger.Speak("Задал текстурные координаты размера по оси y");
+                TextBox settedProperty = ((TextBox)(sender));
+                int settedPropertyValue = Int32.Parse(settedProperty.Text);
+                GeometryModel3D currentMeshModel = ((GeometryModel3D)(selectedMesh.Content));
+                MeshGeometry3D currentMeshTransform = ((MeshGeometry3D)(currentMeshModel.Geometry));
+                PointCollection textures = new PointCollection();
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[0].X, currentMeshTransform.TextureCoordinates[0].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[1].X, currentMeshTransform.TextureCoordinates[1].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[2].X, settedPropertyValue));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[3].X, currentMeshTransform.TextureCoordinates[3].Y));
+                currentMeshTransform.TextureCoordinates = textures;
+
+            }
+        }
+
+        private void SetTextureZScaleHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                debugger.Speak("Задал текстурные координаты размера по оси z");
+                TextBox settedProperty = ((TextBox)(sender));
+                int settedPropertyValue = Int32.Parse(settedProperty.Text);
+                GeometryModel3D currentMeshModel = ((GeometryModel3D)(selectedMesh.Content));
+                MeshGeometry3D currentMeshTransform = ((MeshGeometry3D)(currentMeshModel.Geometry));
+                PointCollection textures = new PointCollection();
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[0].X, currentMeshTransform.TextureCoordinates[0].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[1].X, currentMeshTransform.TextureCoordinates[1].Y));
+                textures.Add(new Point(currentMeshTransform.TextureCoordinates[2].X, currentMeshTransform.TextureCoordinates[2].Y));
+                textures.Add(new Point(settedPropertyValue, settedPropertyValue));
+                currentMeshTransform.TextureCoordinates = textures;
+
+            }
+        }
+
     }
 }
