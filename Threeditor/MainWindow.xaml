@@ -197,7 +197,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Margin="5" Width="65" Text="Авто сглаживание" />
                                         <CheckBox x:Name="normalsSmooth" Margin="5" IsChecked="False" />
-                                        <TextBox x:Name="normalsAngle" Margin="5" Width="50" Text="0m" KeyUp="SetNormalsAngleHandler" />
+                                        <TextBox x:Name="normalsAngle" Margin="5" Width="50" Text="45" KeyUp="SetNormalsAngleHandler" />
                                     </StackPanel>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
@@ -282,7 +282,7 @@
                     <Viewport3D.Children>
                         <ModelVisual3D>
                             <ModelVisual3D.Content>
-                                <DirectionalLight Color="#FFFFFF" Direction="-0.612372,-0.5,-0.612372" />
+                                <DirectionalLight Color="#FFFFFF"  Direction="-0.612372,-0.5,-0.612372" />
                             </ModelVisual3D.Content>
                         </ModelVisual3D>
                         <!--

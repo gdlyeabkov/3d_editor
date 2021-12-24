@@ -61,6 +61,11 @@ namespace Threeditor
             defaultMesh.Add("parent", "none");
             defaultMesh.Add("modifiers", new List<Dictionary<String, Object>>());
             defaultMesh.Add("normals", 45);
+            defaultMesh.Add("textures", new List<Int32>()
+            {
+                0, 1, 1, 1, 0, 0, 1, 0
+            });
+            defaultMesh.Add("type", "mesh");
             meshs.Add(defaultMesh);
         }
 
@@ -421,6 +426,11 @@ namespace Threeditor
             newMesh.Add("parent", "none");
             newMesh.Add("modifiers", new List<Dictionary<String, Object>>());
             newMesh.Add("normals", 45);
+            newMesh.Add("textures", new List<Int32>()
+            {
+                0, 1, 1, 1, 0, 0, 1, 0
+            });
+            newMesh.Add("type", "mesh");
             meshs.Add(newMesh);
 
             transformSelectedMeshName.Text = newMesh["name"].ToString();
@@ -431,6 +441,15 @@ namespace Threeditor
 
             modifiers.Children.Clear();
             embeddedModifiers.SelectedIndex = 0;
+
+            normalsAngle.Text = "45";
+
+            textureXLocation.Text = "0";
+            textureYLocation.Text = "1";
+            textureZLocation.Text = "1";
+            textureXScale.Text = "0";
+            textureYScale.Text = "0";
+            textureZScale.Text = "1";
 
         }
 
@@ -491,6 +510,14 @@ namespace Threeditor
                 modifiers.Children.Add(newModifier);
             }
 
+            normalsAngle.Text = ((int)(meshs[currentMeshIdx]["normals"])).ToString();
+            textureXLocation.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[0].ToString();
+            textureYLocation.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[1].ToString();
+            textureZLocation.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[2].ToString();
+            textureXScale.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[3].ToString();
+            textureYScale.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[4].ToString();
+            textureZScale.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[5].ToString();
+
         }
 
         private void Set3DCursorLocationHandler(object sender, MouseButtonEventArgs e)
@@ -516,6 +543,23 @@ namespace Threeditor
                 spaceContextMenu.Items.Add(spaceContextMenuItem);
                 spaceContextMenu.SetValue(VisibilityProperty, Visibility.Visible);*/
             }
+            else if (e.Key == Key.L && ((Keyboard.Modifiers & ModifierKeys.Shift) > 0) && ((Keyboard.Modifiers & ModifierKeys.Control) > 0))
+            {
+                CreateAmbientLight();
+            }
+            else if (e.Key == Key.L && ((Keyboard.Modifiers & ModifierKeys.Shift) > 0))
+            {
+                CreateDirectionalLight();
+            }
+            else if (e.Key == Key.L && ((Keyboard.Modifiers & ModifierKeys.Control) > 0))
+            {
+                CreatePointLight();
+            }
+            else if (e.Key == Key.L)
+            {
+                CreateSpotLight();
+            }
+
         }
 
         private void RenderHandler(object sender, RoutedEventArgs e)
@@ -734,6 +778,14 @@ namespace Threeditor
                     modifiers.Children.Add(newModifier);
                 }
 
+                normalsAngle.Text = ((int)(meshs[currentMeshIdx]["normals"])).ToString();
+                textureXLocation.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[0].ToString();
+                textureYLocation.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[1].ToString();
+                textureZLocation.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[2].ToString();
+                textureXScale.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[3].ToString();
+                textureYScale.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[4].ToString();
+                textureZScale.Text = ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[5].ToString();
+
             }
         }
 
@@ -811,15 +863,15 @@ namespace Threeditor
                         currentMeshIdx = meshs.IndexOf(mesh);
                     }
                 }
-                meshs[currentMeshIdx]["normals"] = Single.Parse(normalsAngle.Text);
+                meshs[currentMeshIdx]["normals"] = Int32.Parse(normalsAngle.Text);
 
                 bool isSmooth = ((bool)(normalsSmooth.IsChecked));
                 if (isSmooth)
                 {
-                    meshs[currentMeshIdx]["normals"] = ((float)(Math.Floor(((float)(meshs[currentMeshIdx]["normals"])))));
+                    meshs[currentMeshIdx]["normals"] = ((int)(((int)(meshs[currentMeshIdx]["normals"]))));
                 }
 
-                float currentNormals = ((float)(meshs[currentMeshIdx]["normals"]));
+                int currentNormals = ((int)(meshs[currentMeshIdx]["normals"]));
                 Vector3DCollection normals = new Vector3DCollection();
                 Vector3D normal = new Vector3D(currentNormals / 30 >= 1.0 ? 1 : 0, currentNormals / 60 >= 1.0 ? 1 : 0, currentNormals / 90 >= 1.0 ? 1 : 0);
                 normals.Add(normal);
@@ -849,10 +901,10 @@ namespace Threeditor
             }
             if (isSmooth)
             {
-                meshs[currentMeshIdx]["normals"] = ((float)(Math.Floor(((float)(meshs[currentMeshIdx]["normals"])))));
+                meshs[currentMeshIdx]["normals"] = ((int)(((int)(meshs[currentMeshIdx]["normals"]))));
             }
 
-            float currentNormals = ((float)(meshs[currentMeshIdx]["normals"]));
+            int currentNormals = ((int)(meshs[currentMeshIdx]["normals"]));
             Vector3DCollection normals = new Vector3DCollection();
             Vector3D normal = new Vector3D(currentNormals / 30 >= 1.0 ? 1 : 0, currentNormals / 60 >= 1.0 ? 1 : 0, currentNormals / 90 >= 1.0 ? 1 : 0);
             normals.Add(normal);
@@ -912,6 +964,15 @@ namespace Threeditor
                 textures.Add(new Point(currentMeshTransform.TextureCoordinates[3].X, currentMeshTransform.TextureCoordinates[3].Y));
                 currentMeshTransform.TextureCoordinates = textures;
 
+                int currentMeshIdx = 0;
+                foreach (Dictionary<String, Object> mesh in meshs)
+                {
+                    if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                    {
+                        currentMeshIdx = meshs.IndexOf(mesh);
+                    }
+                }
+                ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[0] = settedPropertyValue;
             }
         }
 
@@ -930,7 +991,17 @@ namespace Threeditor
                 textures.Add(new Point(currentMeshTransform.TextureCoordinates[2].X, currentMeshTransform.TextureCoordinates[2].Y));
                 textures.Add(new Point(currentMeshTransform.TextureCoordinates[3].X, currentMeshTransform.TextureCoordinates[3].Y));
                 currentMeshTransform.TextureCoordinates = textures;
-
+                
+                int currentMeshIdx = 0;
+                foreach (Dictionary<String, Object> mesh in meshs)
+                {
+                    if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                    {
+                        currentMeshIdx = meshs.IndexOf(mesh);
+                    }
+                }
+                ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[1] = settedPropertyValue;
+            
             }
         }
 
@@ -949,6 +1020,16 @@ namespace Threeditor
                 textures.Add(new Point(currentMeshTransform.TextureCoordinates[2].X, currentMeshTransform.TextureCoordinates[2].Y));
                 textures.Add(new Point(currentMeshTransform.TextureCoordinates[3].X, currentMeshTransform.TextureCoordinates[3].Y));
                 currentMeshTransform.TextureCoordinates = textures;
+
+                int currentMeshIdx = 0;
+                foreach (Dictionary<String, Object> mesh in meshs)
+                {
+                    if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                    {
+                        currentMeshIdx = meshs.IndexOf(mesh);
+                    }
+                }
+                ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[2] = settedPropertyValue;
 
             }
         }
@@ -969,6 +1050,16 @@ namespace Threeditor
                 textures.Add(new Point(currentMeshTransform.TextureCoordinates[3].X, currentMeshTransform.TextureCoordinates[3].Y));
                 currentMeshTransform.TextureCoordinates = textures;
 
+                int currentMeshIdx = 0;
+                foreach (Dictionary<String, Object> mesh in meshs)
+                {
+                    if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                    {
+                        currentMeshIdx = meshs.IndexOf(mesh);
+                    }
+                }
+                ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[3] = settedPropertyValue;
+
             }
         }
 
@@ -987,6 +1078,16 @@ namespace Threeditor
                 textures.Add(new Point(currentMeshTransform.TextureCoordinates[2].X, settedPropertyValue));
                 textures.Add(new Point(currentMeshTransform.TextureCoordinates[3].X, currentMeshTransform.TextureCoordinates[3].Y));
                 currentMeshTransform.TextureCoordinates = textures;
+
+                int currentMeshIdx = 0;
+                foreach (Dictionary<String, Object> mesh in meshs)
+                {
+                    if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                    {
+                        currentMeshIdx = meshs.IndexOf(mesh);
+                    }
+                }
+                ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[4] = settedPropertyValue;
 
             }
         }
@@ -1007,7 +1108,288 @@ namespace Threeditor
                 textures.Add(new Point(settedPropertyValue, settedPropertyValue));
                 currentMeshTransform.TextureCoordinates = textures;
 
+                int currentMeshIdx = 0;
+                foreach (Dictionary<String, Object> mesh in meshs)
+                {
+                    if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                    {
+                        currentMeshIdx = meshs.IndexOf(mesh);
+                    }
+                }
+                ((List<Int32>)(meshs[currentMeshIdx]["textures"]))[5] = settedPropertyValue;
+
             }
+        }
+
+        private void CreateDirectionalLight()
+        {
+            ModelVisual3D gameObjectMesh = new ModelVisual3D();
+            DirectionalLight gameObjectMeshGeometryModel = new DirectionalLight();
+            Color lightColor = new Color();
+            lightColor.R = 255;
+            lightColor.G = 0;
+            lightColor.B = 0;
+            gameObjectMeshGeometryModel.Color = lightColor;
+            gameObjectMeshGeometryModel.Direction = new Vector3D(-0.612372, -0.5, -0.612372);
+            transformXScale.Text = "1";
+            transformYScale.Text = "1";
+            transformZScale.Text = "1";
+            transformXLocation.Text = "0";
+            transformYLocation.Text = "0";
+            transformZLocation.Text = "0";
+            transformXRotation.Text = "0";
+            transformYRotation.Text = "0";
+            transformZRotation.Text = "0";
+            gameObjectMesh.Content = gameObjectMeshGeometryModel;
+            space.Children.Add(gameObjectMesh);
+            selectedMesh = gameObjectMesh;
+            foreach (StackPanel sceneCollectionItem in sceneCollection.Children)
+            {
+                sceneCollectionItem.Background = System.Windows.Media.Brushes.Transparent;
+            }
+            StackPanel newSceneCollectionItem = new StackPanel();
+            newSceneCollectionItem.Orientation = Orientation.Horizontal;
+            newSceneCollectionItem.Background = System.Windows.Media.Brushes.SkyBlue;
+            TextBlock newSceneCollectionItemLabel = new TextBlock();
+            newSceneCollectionItemLabel.Text = "🛆";
+            newSceneCollectionItemLabel.Margin = new Thickness(25, 5, 5, 5);
+            newSceneCollectionItem.Children.Add(newSceneCollectionItemLabel);
+            TextBlock newSceneCollectionItemIcon = new TextBlock();
+            newSceneCollectionItemIcon.Text = "Новый свет " + (space.Children.Count - 1).ToString();
+            newSceneCollectionItemIcon.Margin = new Thickness(5, 5, 5, 5);
+            newSceneCollectionItem.Children.Add(newSceneCollectionItemIcon);
+            sceneCollection.Children.Insert(sceneCollection.Children.Count - 1, newSceneCollectionItem);
+            newSceneCollectionItem.MouseUp += SelectMeshHandler;
+            Dictionary<String, Object> newMesh = new Dictionary<String, Object>();
+            newMesh.Add("index", ((int)(space.Children.IndexOf(gameObjectMesh))));
+            newMesh.Add("name", newSceneCollectionItemIcon.Text);
+            newMesh.Add("parent", "none");
+            newMesh.Add("modifiers", new List<Dictionary<String, Object>>());
+            newMesh.Add("normals", 45);
+            newMesh.Add("textures", new List<Int32>()
+            {
+                0, 1, 1, 1, 0, 0, 1, 0
+            });
+            newMesh.Add("type", "directionalLight");
+            meshs.Add(newMesh);
+            transformSelectedMeshName.Text = newMesh["name"].ToString();
+            ComboBoxItem selectableMesh = new ComboBoxItem();
+            selectableMesh.Content = transformSelectedMeshName.Text;
+            transformMeshSelector.Items.Insert(transformMeshSelector.Items.Count - 1, selectableMesh);
+            transformMeshSelector.SelectedIndex = transformMeshSelector.Items.Count - 2;
+            modifiers.Children.Clear();
+            embeddedModifiers.SelectedIndex = 0;
+            normalsAngle.Text = "45";
+            textureXLocation.Text = "0";
+            textureYLocation.Text = "1";
+            textureZLocation.Text = "1";
+            textureXScale.Text = "0";
+            textureYScale.Text = "0";
+            textureZScale.Text = "1";
+        }
+
+        private void CreateAmbientLight()
+        {
+            ModelVisual3D gameObjectMesh = new ModelVisual3D();
+            AmbientLight gameObjectMeshGeometryModel = new AmbientLight();
+            Color lightColor = new Color();
+            lightColor.R = 0;
+            lightColor.G = 255;
+            lightColor.B = 0;
+            gameObjectMeshGeometryModel.Color = lightColor;
+            transformXScale.Text = "1";
+            transformYScale.Text = "1";
+            transformZScale.Text = "1";
+            transformXLocation.Text = "0";
+            transformYLocation.Text = "0";
+            transformZLocation.Text = "0";
+            transformXRotation.Text = "0";
+            transformYRotation.Text = "0";
+            transformZRotation.Text = "0";
+            gameObjectMesh.Content = gameObjectMeshGeometryModel;
+            space.Children.Add(gameObjectMesh);
+            selectedMesh = gameObjectMesh;
+            foreach (StackPanel sceneCollectionItem in sceneCollection.Children)
+            {
+                sceneCollectionItem.Background = System.Windows.Media.Brushes.Transparent;
+            }
+            StackPanel newSceneCollectionItem = new StackPanel();
+            newSceneCollectionItem.Orientation = Orientation.Horizontal;
+            newSceneCollectionItem.Background = System.Windows.Media.Brushes.SkyBlue;
+            TextBlock newSceneCollectionItemLabel = new TextBlock();
+            newSceneCollectionItemLabel.Text = "🛆";
+            newSceneCollectionItemLabel.Margin = new Thickness(25, 5, 5, 5);
+            newSceneCollectionItem.Children.Add(newSceneCollectionItemLabel);
+            TextBlock newSceneCollectionItemIcon = new TextBlock();
+            newSceneCollectionItemIcon.Text = "Новый внешний свет " + (space.Children.Count - 1).ToString();
+            newSceneCollectionItemIcon.Margin = new Thickness(5, 5, 5, 5);
+            newSceneCollectionItem.Children.Add(newSceneCollectionItemIcon);
+            sceneCollection.Children.Insert(sceneCollection.Children.Count - 1, newSceneCollectionItem);
+            newSceneCollectionItem.MouseUp += SelectMeshHandler;
+            Dictionary<String, Object> newMesh = new Dictionary<String, Object>();
+            newMesh.Add("index", ((int)(space.Children.IndexOf(gameObjectMesh))));
+            newMesh.Add("name", newSceneCollectionItemIcon.Text);
+            newMesh.Add("parent", "none");
+            newMesh.Add("modifiers", new List<Dictionary<String, Object>>());
+            newMesh.Add("normals", 45);
+            newMesh.Add("textures", new List<Int32>()
+            {
+                0, 1, 1, 1, 0, 0, 1, 0
+            });
+            newMesh.Add("type", "ambientLight");
+            meshs.Add(newMesh);
+            transformSelectedMeshName.Text = newMesh["name"].ToString();
+            ComboBoxItem selectableMesh = new ComboBoxItem();
+            selectableMesh.Content = transformSelectedMeshName.Text;
+            transformMeshSelector.Items.Insert(transformMeshSelector.Items.Count - 1, selectableMesh);
+            transformMeshSelector.SelectedIndex = transformMeshSelector.Items.Count - 2;
+            modifiers.Children.Clear();
+            embeddedModifiers.SelectedIndex = 0;
+
+            normalsAngle.Text = "45";
+
+            textureXLocation.Text = "0";
+            textureYLocation.Text = "1";
+            textureZLocation.Text = "1";
+            textureXScale.Text = "0";
+            textureYScale.Text = "0";
+            textureZScale.Text = "1";
+        }
+
+        private void CreatePointLight()
+        {
+            ModelVisual3D gameObjectMesh = new ModelVisual3D();
+            PointLight gameObjectMeshGeometryModel = new PointLight();
+            gameObjectMeshGeometryModel.Range = 50;
+            gameObjectMeshGeometryModel.Position = new Point3D(0, 0, 0);
+            Color lightColor = new Color();
+            lightColor.R = 0;
+            lightColor.G = 0;
+            lightColor.B = 255;
+            gameObjectMeshGeometryModel.Color = lightColor;
+            transformXScale.Text = "1";
+            transformYScale.Text = "1";
+            transformZScale.Text = "1";
+            transformXLocation.Text = "0";
+            transformYLocation.Text = "0";
+            transformZLocation.Text = "0";
+            transformXRotation.Text = "0";
+            transformYRotation.Text = "0";
+            transformZRotation.Text = "0";
+            gameObjectMesh.Content = gameObjectMeshGeometryModel;
+            space.Children.Add(gameObjectMesh);
+            selectedMesh = gameObjectMesh;
+            foreach (StackPanel sceneCollectionItem in sceneCollection.Children)
+            {
+                sceneCollectionItem.Background = System.Windows.Media.Brushes.Transparent;
+            }
+            StackPanel newSceneCollectionItem = new StackPanel();
+            newSceneCollectionItem.Orientation = Orientation.Horizontal;
+            newSceneCollectionItem.Background = System.Windows.Media.Brushes.SkyBlue;
+            TextBlock newSceneCollectionItemLabel = new TextBlock();
+            newSceneCollectionItemLabel.Text = "🛆";
+            newSceneCollectionItemLabel.Margin = new Thickness(25, 5, 5, 5);
+            newSceneCollectionItem.Children.Add(newSceneCollectionItemLabel);
+            TextBlock newSceneCollectionItemIcon = new TextBlock();
+            newSceneCollectionItemIcon.Text = "Новый свет точка " + (space.Children.Count - 1).ToString();
+            newSceneCollectionItemIcon.Margin = new Thickness(5, 5, 5, 5);
+            newSceneCollectionItem.Children.Add(newSceneCollectionItemIcon);
+            sceneCollection.Children.Insert(sceneCollection.Children.Count - 1, newSceneCollectionItem);
+            newSceneCollectionItem.MouseUp += SelectMeshHandler;
+            Dictionary<String, Object> newMesh = new Dictionary<String, Object>();
+            newMesh.Add("index", ((int)(space.Children.IndexOf(gameObjectMesh))));
+            newMesh.Add("name", newSceneCollectionItemIcon.Text);
+            newMesh.Add("parent", "none");
+            newMesh.Add("modifiers", new List<Dictionary<String, Object>>());
+            newMesh.Add("normals", 45);
+            newMesh.Add("textures", new List<Int32>()
+            {
+                0, 1, 1, 1, 0, 0, 1, 0
+            });
+            newMesh.Add("type", "pointLight");
+            meshs.Add(newMesh);
+            transformSelectedMeshName.Text = newMesh["name"].ToString();
+            ComboBoxItem selectableMesh = new ComboBoxItem();
+            selectableMesh.Content = transformSelectedMeshName.Text;
+            transformMeshSelector.Items.Insert(transformMeshSelector.Items.Count - 1, selectableMesh);
+            transformMeshSelector.SelectedIndex = transformMeshSelector.Items.Count - 2;
+            modifiers.Children.Clear();
+            embeddedModifiers.SelectedIndex = 0;
+            normalsAngle.Text = "45";
+            textureXLocation.Text = "0";
+            textureYLocation.Text = "1";
+            textureZLocation.Text = "1";
+            textureXScale.Text = "0";
+            textureYScale.Text = "0";
+            textureZScale.Text = "1";
+        }
+
+        private void CreateSpotLight()
+        {
+            ModelVisual3D gameObjectMesh = new ModelVisual3D();
+            SpotLight gameObjectMeshGeometryModel = new SpotLight();
+            gameObjectMeshGeometryModel.Range = 50;
+            gameObjectMeshGeometryModel.Position = new Point3D(0, 0, 0);
+            Color lightColor = new Color();
+            lightColor.R = 0;
+            lightColor.G = 0;
+            lightColor.B = 0;
+            gameObjectMeshGeometryModel.Color = lightColor;
+            transformXScale.Text = "1";
+            transformYScale.Text = "1";
+            transformZScale.Text = "1";
+            transformXLocation.Text = "0";
+            transformYLocation.Text = "0";
+            transformZLocation.Text = "0";
+            transformXRotation.Text = "0";
+            transformYRotation.Text = "0";
+            transformZRotation.Text = "0";
+            gameObjectMesh.Content = gameObjectMeshGeometryModel;
+            space.Children.Add(gameObjectMesh);
+            selectedMesh = gameObjectMesh;
+            foreach (StackPanel sceneCollectionItem in sceneCollection.Children)
+            {
+                sceneCollectionItem.Background = System.Windows.Media.Brushes.Transparent;
+            }
+            StackPanel newSceneCollectionItem = new StackPanel();
+            newSceneCollectionItem.Orientation = Orientation.Horizontal;
+            newSceneCollectionItem.Background = System.Windows.Media.Brushes.SkyBlue;
+            TextBlock newSceneCollectionItemLabel = new TextBlock();
+            newSceneCollectionItemLabel.Text = "🛆";
+            newSceneCollectionItemLabel.Margin = new Thickness(25, 5, 5, 5);
+            newSceneCollectionItem.Children.Add(newSceneCollectionItemLabel);
+            TextBlock newSceneCollectionItemIcon = new TextBlock();
+            newSceneCollectionItemIcon.Text = "Новый свет пятно " + (space.Children.Count - 1).ToString();
+            newSceneCollectionItemIcon.Margin = new Thickness(5, 5, 5, 5);
+            newSceneCollectionItem.Children.Add(newSceneCollectionItemIcon);
+            sceneCollection.Children.Insert(sceneCollection.Children.Count - 1, newSceneCollectionItem);
+            newSceneCollectionItem.MouseUp += SelectMeshHandler;
+            Dictionary<String, Object> newMesh = new Dictionary<String, Object>();
+            newMesh.Add("index", ((int)(space.Children.IndexOf(gameObjectMesh))));
+            newMesh.Add("name", newSceneCollectionItemIcon.Text);
+            newMesh.Add("parent", "none");
+            newMesh.Add("modifiers", new List<Dictionary<String, Object>>());
+            newMesh.Add("normals", 45);
+            newMesh.Add("textures", new List<Int32>()
+            {
+                0, 1, 1, 1, 0, 0, 1, 0
+            });
+            newMesh.Add("type", "spotLight");
+            meshs.Add(newMesh);
+            transformSelectedMeshName.Text = newMesh["name"].ToString();
+            ComboBoxItem selectableMesh = new ComboBoxItem();
+            selectableMesh.Content = transformSelectedMeshName.Text;
+            transformMeshSelector.Items.Insert(transformMeshSelector.Items.Count - 1, selectableMesh);
+            transformMeshSelector.SelectedIndex = transformMeshSelector.Items.Count - 2;
+            modifiers.Children.Clear();
+            embeddedModifiers.SelectedIndex = 0;
+            normalsAngle.Text = "45";
+            textureXLocation.Text = "0";
+            textureYLocation.Text = "1";
+            textureZLocation.Text = "1";
+            textureXScale.Text = "0";
+            textureYScale.Text = "0";
+            textureZScale.Text = "1";
         }
 
     }
