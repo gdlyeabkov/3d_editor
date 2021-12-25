@@ -68,7 +68,7 @@
                         <TextBlock Text="🔮" Margin="5" Foreground="Orange" FontSize="14" FontWeight="ExtraBlack" HorizontalAlignment="Center" DataContext="1" MouseUp="ToggleTabHandler" />
                         <TextBlock Text="🔧" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" DataContext="2" MouseUp="ToggleTabHandler" />
                         <TextBlock Text="🛆" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" DataContext="3" MouseUp="ToggleTabHandler" />
-                        <TextBlock Text="⛶" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" />
+                        <TextBlock Text="🙾" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" DataContext="4" MouseUp="ToggleTabHandler" />
                         <TextBlock Text="⛶" Margin="5" Foreground="Orange" FontSize="18" FontWeight="ExtraBlack" HorizontalAlignment="Center" />
                     </StackPanel>
                     <TabControl x:Name="tabs" Background="Transparent" BorderThickness="0">
@@ -244,7 +244,20 @@
                                 </StackPanel>
                             </StackPanel>
                         </TabItem>
-
+                        <TabItem Header="4" Visibility="Hidden">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="5" Text="⮟" MouseUp="ToggleTexturePropsSettingsHandler" />
+                                    <TextBlock Margin="5" Text="Свойства текстуры" />
+                                </StackPanel>
+                                <StackPanel x:Name="texturePropsSettings">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="texturesSource" Margin="5" Width="85" Content="Загрузить" Click="SetTexturePropsSourceHandler" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem>
+                        
                     </TabControl>
                 </StackPanel>
             </StackPanel>
@@ -335,11 +348,25 @@
                                     </GeometryModel3D.Geometry>
                                     <GeometryModel3D.Material>
                                         <MaterialGroup>
+                                            <SpecularMaterial
+                                                Brush="Green"
+                                                SpecularPower="150"
+                                            />
+                                            <EmissiveMaterial
+                                               Brush="Green"
+                                            />
                                             <DiffuseMaterial>
                                                 <DiffuseMaterial.Brush>
+                                                    <ImageBrush>
+                                                        <ImageBrush.ImageSource>
+                                                            <BitmapImage UriSource="https://cdn0.iconfinder.com/data/icons/summer-background/1200/Summer_Travel_Background-256.png" />
+                                                        </ImageBrush.ImageSource>
+                                                    </ImageBrush>
+                                                    <!--
                                                     <SolidColorBrush Color="Red">
 
                                                     </SolidColorBrush>
+                                                    -->
                                                 </DiffuseMaterial.Brush>
                                             </DiffuseMaterial>
                                         </MaterialGroup>

@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Speech.Synthesis;
 using System.IO;
+using Microsoft.Win32;
 
 namespace Threeditor
 {
@@ -66,6 +67,7 @@ namespace Threeditor
                 0, 1, 1, 1, 0, 0, 1, 0
             });
             defaultMesh.Add("type", "mesh");
+            defaultMesh.Add("textureSource", "https://cdn0.iconfinder.com/data/icons/summer-background/1200/Summer_Travel_Background-256.png");
             meshs.Add(defaultMesh);
         }
 
@@ -374,8 +376,8 @@ namespace Threeditor
             /*gameObjectMeshTransformTranslate.OffsetX = 3;
             gameObjectMeshTransformTranslate.OffsetY = 0;
             gameObjectMeshTransformTranslate.OffsetZ = 0;*/
-            gameObjectMeshTransformTranslate.OffsetX =  Canvas.GetLeft(meshCursor);
-            gameObjectMeshTransformTranslate.OffsetY = Canvas.GetTop(meshCursor);
+            gameObjectMeshTransformTranslate.OffsetX = ((canvas.Width / 2 - Canvas.GetLeft(meshCursor)) * -1) / 15;
+            gameObjectMeshTransformTranslate.OffsetY = (canvas.Height - 100 - Canvas.GetTop(meshCursor)) / 20;
             gameObjectMeshTransformTranslate.OffsetZ = 0;
             transformXLocation.Text = gameObjectMeshTransformTranslate.OffsetX.ToString();
             transformYLocation.Text = gameObjectMeshTransformTranslate.OffsetY.ToString();
@@ -390,13 +392,28 @@ namespace Threeditor
             gameObjectMeshTransform.Children.Add(gameObjectMeshTransformRotate);
             gameObjectMeshGeometryModel.Transform = gameObjectMeshTransform;
             MaterialGroup gameObjectMeshMaterialGroup = new MaterialGroup();
+            SpecularMaterial gameObjectMeshSpecularMaterial = new SpecularMaterial();
+            gameObjectMeshSpecularMaterial.SpecularPower = 150;
+            gameObjectMeshSpecularMaterial.Brush = System.Windows.Media.Brushes.Green;
+            gameObjectMeshMaterialGroup.Children.Add(gameObjectMeshSpecularMaterial);
+            EmissiveMaterial gameObjectMeshEmissiveMaterial = new EmissiveMaterial();
+            gameObjectMeshEmissiveMaterial.Brush = System.Windows.Media.Brushes.Green;
+            gameObjectMeshMaterialGroup.Children.Add(gameObjectMeshEmissiveMaterial);
             DiffuseMaterial gameObjectMeshDiffuseMaterial = new DiffuseMaterial();
             Color gameObjectMeshSolidColor = new Color();
             gameObjectMeshSolidColor.R = 255;
             gameObjectMeshSolidColor.G = 0;
             gameObjectMeshSolidColor.B = 0;
             gameObjectMeshDiffuseMaterial.Brush = System.Windows.Media.Brushes.Red;
+            /*ImageBrush imageBrush = new ImageBrush();
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.UriSource = new Uri("https://cdn0.iconfinder.com/data/icons/summer-background/1200/Summer_Travel_Background-256.png", UriKind.Absolute);
+            bitmapImage.EndInit();
+            imageBrush.ImageSource = bitmapImage;
+            gameObjectMeshDiffuseMaterial.Brush = imageBrush;*/
             gameObjectMeshMaterialGroup.Children.Add(gameObjectMeshDiffuseMaterial);
+
             gameObjectMeshGeometryModel.Material = gameObjectMeshMaterialGroup;
             gameObjectMesh.Content = gameObjectMeshGeometryModel;
             space.Children.Add(gameObjectMesh);
@@ -431,6 +448,7 @@ namespace Threeditor
                 0, 1, 1, 1, 0, 0, 1, 0
             });
             newMesh.Add("type", "mesh");
+            newMesh.Add("textureSource", "https://cdn0.iconfinder.com/data/icons/summer-background/1200/Summer_Travel_Background-256.png");
             meshs.Add(newMesh);
 
             transformSelectedMeshName.Text = newMesh["name"].ToString();
@@ -1125,6 +1143,21 @@ namespace Threeditor
         {
             ModelVisual3D gameObjectMesh = new ModelVisual3D();
             DirectionalLight gameObjectMeshGeometryModel = new DirectionalLight();
+            Transform3DGroup gameObjectMeshTransform = new Transform3DGroup();
+            TranslateTransform3D gameObjectMeshTransformTranslate = new TranslateTransform3D();
+            gameObjectMeshTransformTranslate.OffsetX = 0;
+            gameObjectMeshTransformTranslate.OffsetX = 0;
+            gameObjectMeshTransformTranslate.OffsetY = 0;
+            ScaleTransform3D gameObjectMeshTransformScale = new ScaleTransform3D();
+            gameObjectMeshTransformScale.ScaleX = 0.1;
+            gameObjectMeshTransformScale.ScaleY = 0.1;
+            gameObjectMeshTransformScale.ScaleZ = 0.1;
+            RotateTransform3D gameObjectMeshTransformRotation = new RotateTransform3D();
+            gameObjectMeshTransformRotation.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 0), 0);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformTranslate);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformScale);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformRotation);
+            gameObjectMeshGeometryModel.Transform = gameObjectMeshTransform;
             Color lightColor = new Color();
             lightColor.R = 255;
             lightColor.G = 0;
@@ -1171,6 +1204,7 @@ namespace Threeditor
                 0, 1, 1, 1, 0, 0, 1, 0
             });
             newMesh.Add("type", "directionalLight");
+            newMesh.Add("textureSource", "https://cdn0.iconfinder.com/data/icons/summer-background/1200/Summer_Travel_Background-256.png");
             meshs.Add(newMesh);
             transformSelectedMeshName.Text = newMesh["name"].ToString();
             ComboBoxItem selectableMesh = new ComboBoxItem();
@@ -1192,6 +1226,21 @@ namespace Threeditor
         {
             ModelVisual3D gameObjectMesh = new ModelVisual3D();
             AmbientLight gameObjectMeshGeometryModel = new AmbientLight();
+            Transform3DGroup gameObjectMeshTransform = new Transform3DGroup();
+            TranslateTransform3D gameObjectMeshTransformTranslate = new TranslateTransform3D();
+            gameObjectMeshTransformTranslate.OffsetX = 0;
+            gameObjectMeshTransformTranslate.OffsetX = 0;
+            gameObjectMeshTransformTranslate.OffsetY = 0;
+            ScaleTransform3D gameObjectMeshTransformScale = new ScaleTransform3D();
+            gameObjectMeshTransformScale.ScaleX = 0.1;
+            gameObjectMeshTransformScale.ScaleY = 0.1;
+            gameObjectMeshTransformScale.ScaleZ = 0.1;
+            RotateTransform3D gameObjectMeshTransformRotation = new RotateTransform3D();
+            gameObjectMeshTransformRotation.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 0), 0);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformTranslate);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformScale);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformRotation);
+            gameObjectMeshGeometryModel.Transform = gameObjectMeshTransform;
             Color lightColor = new Color();
             lightColor.R = 0;
             lightColor.G = 255;
@@ -1237,6 +1286,7 @@ namespace Threeditor
                 0, 1, 1, 1, 0, 0, 1, 0
             });
             newMesh.Add("type", "ambientLight");
+            newMesh.Add("textureSource", "https://cdn0.iconfinder.com/data/icons/summer-background/1200/Summer_Travel_Background-256.png");
             meshs.Add(newMesh);
             transformSelectedMeshName.Text = newMesh["name"].ToString();
             ComboBoxItem selectableMesh = new ComboBoxItem();
@@ -1260,6 +1310,21 @@ namespace Threeditor
         {
             ModelVisual3D gameObjectMesh = new ModelVisual3D();
             PointLight gameObjectMeshGeometryModel = new PointLight();
+            Transform3DGroup gameObjectMeshTransform = new Transform3DGroup();
+            TranslateTransform3D gameObjectMeshTransformTranslate = new TranslateTransform3D();
+            gameObjectMeshTransformTranslate.OffsetX = 0;
+            gameObjectMeshTransformTranslate.OffsetX = 0;
+            gameObjectMeshTransformTranslate.OffsetY = 0;
+            ScaleTransform3D gameObjectMeshTransformScale = new ScaleTransform3D();
+            gameObjectMeshTransformScale.ScaleX = 0.1;
+            gameObjectMeshTransformScale.ScaleY = 0.1;
+            gameObjectMeshTransformScale.ScaleZ = 0.1;
+            RotateTransform3D gameObjectMeshTransformRotation = new RotateTransform3D();
+            gameObjectMeshTransformRotation.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 0), 0);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformTranslate);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformScale);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformRotation);
+            gameObjectMeshGeometryModel.Transform = gameObjectMeshTransform;
             gameObjectMeshGeometryModel.Range = 50;
             gameObjectMeshGeometryModel.Position = new Point3D(0, 0, 0);
             Color lightColor = new Color();
@@ -1307,6 +1372,7 @@ namespace Threeditor
                 0, 1, 1, 1, 0, 0, 1, 0
             });
             newMesh.Add("type", "pointLight");
+            newMesh.Add("textureSource", "https://cdn0.iconfinder.com/data/icons/summer-background/1200/Summer_Travel_Background-256.png");
             meshs.Add(newMesh);
             transformSelectedMeshName.Text = newMesh["name"].ToString();
             ComboBoxItem selectableMesh = new ComboBoxItem();
@@ -1328,6 +1394,21 @@ namespace Threeditor
         {
             ModelVisual3D gameObjectMesh = new ModelVisual3D();
             SpotLight gameObjectMeshGeometryModel = new SpotLight();
+            Transform3DGroup gameObjectMeshTransform = new Transform3DGroup();
+            TranslateTransform3D gameObjectMeshTransformTranslate = new TranslateTransform3D();
+            gameObjectMeshTransformTranslate.OffsetX = 0;
+            gameObjectMeshTransformTranslate.OffsetX = 0;
+            gameObjectMeshTransformTranslate.OffsetY = 0;
+            ScaleTransform3D gameObjectMeshTransformScale = new ScaleTransform3D();
+            gameObjectMeshTransformScale.ScaleX = 0.1;
+            gameObjectMeshTransformScale.ScaleY = 0.1;
+            gameObjectMeshTransformScale.ScaleZ = 0.1;
+            RotateTransform3D gameObjectMeshTransformRotation = new RotateTransform3D();
+            gameObjectMeshTransformRotation.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 0), 0);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformTranslate);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformScale);
+            gameObjectMeshTransform.Children.Add(gameObjectMeshTransformRotation);
+            gameObjectMeshGeometryModel.Transform = gameObjectMeshTransform;
             gameObjectMeshGeometryModel.Range = 50;
             gameObjectMeshGeometryModel.Position = new Point3D(0, 0, 0);
             Color lightColor = new Color();
@@ -1375,6 +1456,7 @@ namespace Threeditor
                 0, 1, 1, 1, 0, 0, 1, 0
             });
             newMesh.Add("type", "spotLight");
+            newMesh.Add("textureSource", "https://cdn0.iconfinder.com/data/icons/summer-background/1200/Summer_Travel_Background-256.png");
             meshs.Add(newMesh);
             transformSelectedMeshName.Text = newMesh["name"].ToString();
             ComboBoxItem selectableMesh = new ComboBoxItem();
@@ -1390,6 +1472,61 @@ namespace Threeditor
             textureXScale.Text = "0";
             textureYScale.Text = "0";
             textureZScale.Text = "1";
+        }
+
+        public static float Clamp(float val, float min, float max)
+        {
+            if (val.CompareTo(min) < 0) return min;
+            else if (val.CompareTo(max) > 0) return max;
+            else return val;
+        }
+
+        private void SetTexturePropsSourceHandler(object sender, RoutedEventArgs e)
+        {
+
+            OpenFileDialog ofd = new OpenFileDialog();
+            bool? res = ofd.ShowDialog();
+            if (res != false)
+            {
+                Stream myStream;
+                if ((myStream = ofd.OpenFile()) != null)
+                {
+                    string file_name = ofd.FileName;
+                    string file_text = File.ReadAllText(file_name);
+                    int currentMeshIdx = 0;
+                    foreach (Dictionary<String, Object> mesh in meshs)
+                    {
+                        if (((int)(mesh["index"])) == space.Children.IndexOf(selectedMesh))
+                        {
+                            currentMeshIdx = meshs.IndexOf(mesh);
+                        }
+                    }
+                    meshs[currentMeshIdx]["textureSource"] = file_name;
+                    MaterialGroup mg = ((MaterialGroup)(((GeometryModel3D)(selectedMesh.Content)).Material));
+                    ImageBrush imageBrush = new ImageBrush();
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri(file_name, UriKind.Absolute);
+                    bitmapImage.EndInit();
+                    imageBrush.ImageSource = bitmapImage;
+                    ((DiffuseMaterial)(mg.Children[2])).Brush = imageBrush;
+                }
+            }
+        }
+
+        private void ToggleTexturePropsSettingsHandler(object sender, RoutedEventArgs e)
+        {
+            TextBlock toggler = ((TextBlock)(sender));
+            if (texturePropsSettings.Visibility == Visibility.Visible)
+            {
+                texturePropsSettings.Visibility = Visibility.Collapsed;
+                toggler.Text = "➤";
+            }
+            else if (texturePropsSettings.Visibility == Visibility.Collapsed)
+            {
+                texturePropsSettings.Visibility = Visibility.Visible;
+                toggler.Text = "⮟";
+            }
         }
 
     }
