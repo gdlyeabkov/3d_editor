@@ -265,7 +265,7 @@
         <StackPanel Background="LightSlateGray" DockPanel.Dock="Bottom" Height="150">
 
         </StackPanel>
-        <StackPanel MouseDown="StartMoveCameraHandler" MouseMove="MoveCameraHandler" MouseUp="StopMoveCameraHandler" DockPanel.Dock="Left" Background="Gray">
+        <StackPanel x:Name="contextMenuRaiser" MouseDown="StartMoveCameraHandler" MouseMove="MoveCameraHandler" MouseUp="StopMoveCameraHandler" DockPanel.Dock="Left" Background="Gray">
             <StackPanel.ContextMenu>
                 <ContextMenu x:Name="spaceContextMenu">
                     <MenuItem Header="Контекстное меню объекта" IsEnabled="False" />

@@ -400,6 +400,7 @@ namespace Threeditor
             gameObjectMeshEmissiveMaterial.Brush = System.Windows.Media.Brushes.Green;
             gameObjectMeshMaterialGroup.Children.Add(gameObjectMeshEmissiveMaterial);
             DiffuseMaterial gameObjectMeshDiffuseMaterial = new DiffuseMaterial();
+            gameObjectMeshMaterialGroup.Children.Add(gameObjectMeshDiffuseMaterial);
             Color gameObjectMeshSolidColor = new Color();
             gameObjectMeshSolidColor.R = 255;
             gameObjectMeshSolidColor.G = 0;
@@ -412,7 +413,8 @@ namespace Threeditor
             bitmapImage.EndInit();
             imageBrush.ImageSource = bitmapImage;
             gameObjectMeshDiffuseMaterial.Brush = imageBrush;*/
-            gameObjectMeshMaterialGroup.Children.Add(gameObjectMeshDiffuseMaterial);
+            
+            
 
             gameObjectMeshGeometryModel.Material = gameObjectMeshMaterialGroup;
             gameObjectMesh.Content = gameObjectMeshGeometryModel;
@@ -468,6 +470,16 @@ namespace Threeditor
             textureXScale.Text = "0";
             textureYScale.Text = "0";
             textureZScale.Text = "1";
+
+            // debugger.Speak(((BitmapImage)(((ImageBrush)(gameObjectMeshDiffuseMaterial.Brush)).ImageSource)).UriSource.AbsoluteUri);
+
+            ImageBrush imageBrush = new ImageBrush();
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.BeginInit();
+            bitmapImage.UriSource = new Uri(@"file:///C:/pictures/default_texture.png");
+            bitmapImage.EndInit();
+            imageBrush.ImageSource = bitmapImage;
+            gameObjectMeshDiffuseMaterial.Brush = imageBrush;
 
         }
 
@@ -560,6 +572,7 @@ namespace Threeditor
                 spaceContextMenuItem.Header = "Добавить";
                 spaceContextMenu.Items.Add(spaceContextMenuItem);
                 spaceContextMenu.SetValue(VisibilityProperty, Visibility.Visible);*/
+                contextMenuRaiser.ContextMenu.IsOpen = true;
             }
             else if (e.Key == Key.L && ((Keyboard.Modifiers & ModifierKeys.Shift) > 0) && ((Keyboard.Modifiers & ModifierKeys.Control) > 0))
             {
